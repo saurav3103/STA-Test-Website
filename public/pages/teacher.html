@@ -152,6 +152,7 @@
 
     <div class="sidebar-section">CONTENT</div>
     <div class="nav-item" onclick="showPage('questions')"><span class="nav-icon">❓</span>Question Bank</div>
+    <div class="nav-item" onclick="showPage('students')"><span class="nav-icon">👥</span>Students</div>
 
     <div class="sidebar-section">REPORTS</div>
     <div class="nav-item" onclick="showPage('results')"><span class="nav-icon">📈</span>All Results</div>
@@ -256,6 +257,32 @@
       <div class="question-list" id="q-list"></div>
     </div>
 
+    <!-- Students -->
+    <div class="page" id="page-students">
+      <div class="page-header">
+        <div>
+          <div class="page-title">STUDENTS</div>
+          <div class="page-sub">// all registered student accounts</div>
+        </div>
+      </div>
+      <div class="card" style="overflow:auto;">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th>EMAIL</th>
+              <th>ACCOUNT TYPE</th>
+            </tr>
+          </thead>
+          <tbody id="students-body"></tbody>
+        </table>
+        <div id="no-students" class="empty-state" style="display:none;">
+          <div class="empty-icon">📭</div>
+          <div>No students registered yet.</div>
+        </div>
+      </div>
+    </div>
+
     <!-- Results -->
     <div class="page" id="page-results">
       <div class="page-header">
@@ -320,9 +347,9 @@
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('page-' + id).classList.add('active');
-    const navItems = { dashboard: 0, create: 1, papers: 2, questions: 3, results: 4 };
+    const navItems = { dashboard: 0, create: 1, papers: 2, questions: 3, students: 4, results: 5 };
     document.querySelectorAll('.nav-item')[Object.keys(navItems).indexOf(id)]?.classList.add('active');
-    const renders = { dashboard: renderDashboard, papers: renderPapers, questions: renderQuestions, results: renderResults };
+    const renders = { dashboard: renderDashboard, papers: renderPapers, questions: renderQuestions, students: renderStudents, results: renderResults };
     renders[id]?.();
   }
 
@@ -497,6 +524,35 @@
   }
 
   function setFilter(topic) { activeFilter = topic; renderQuestions(); }
+
+  // ── Students ──
+  function renderStudents() {
+    const students = JSON.parse(localStorage.getItem('et_students')) || {};
+    const rows = Object.entries(students)
+      .map(([email, data]) => ({
+        name: data.name || 'Student',
+        email,
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    const tbody = document.getElementById('students-body');
+    const noStudents = document.getElementById('no-students');
+
+    if (!rows.length) {
+      tbody.innerHTML = '';
+      noStudents.style.display = '';
+      return;
+    }
+
+    noStudents.style.display = 'none';
+    tbody.innerHTML = rows.map(s => `
+      <tr>
+        <td><strong>${s.name}</strong></td>
+        <td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">${s.email}</td>
+        <td><span class="score-pill score-pass">STUDENT</span></td>
+      </tr>
+    `).join('');
+  }
 
   // ── Results ──
   function renderResults() {

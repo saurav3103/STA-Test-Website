@@ -395,8 +395,6 @@
   <div class="logo-icon"></div>
   <span class="logo-text">Electro<span>Test</span></span>
   <nav>
-    <a href="#" class="nav-link" onclick="openModal('teacher')">TEACHER LOGIN</a>
-    <a href="#" class="nav-link" onclick="openModal('student')">STUDENT LOGIN</a>
     <a href="pages/login.html" class="nav-link">LOGIN</a>
     <a href="pages/register.html" class="nav-link">REGISTER</a>
     <a href="pages/admin.html" class="nav-link">ADMIN</a>
@@ -409,16 +407,16 @@
   <p class="hero-sub">A professional test platform for apprentice electricians. Teachers build papers from a curated 50-question bank. Students conquer them with a code.</p>
 
   <div class="role-grid">
-    <a class="role-card" href="#" onclick="openModal('teacher'); return false;">
+    <a class="role-card" href="pages/login.html">
       <span class="role-icon">📋</span>
-      <div class="role-title">TEACHER</div>
-      <p class="role-desc">Create test papers, manage the question bank, and track student performance in real time.</p>
+      <div class="role-title">LOGIN</div>
+      <p class="role-desc">Single login entry point for both teachers and students with role-based access.</p>
       <span class="role-arrow">↗</span>
     </a>
-    <a class="role-card student-card" href="#" onclick="openModal('student'); return false;">
+    <a class="role-card student-card" href="pages/register.html">
       <span class="role-icon">⚡</span>
-      <div class="role-title">STUDENT</div>
-      <p class="role-desc">Enter your test code, race the clock, and submit for instant scored feedback.</p>
+      <div class="role-title">REGISTER</div>
+      <p class="role-desc">Create a student or teacher account, then sign in from the single login page.</p>
       <span class="role-arrow">↗</span>
     </a>
   </div>
@@ -431,78 +429,6 @@
   <div class="stat"><div class="stat-val">60%</div><div class="stat-label">PASS MARK</div></div>
 </div>
 
-<!-- Teacher Modal -->
-<div class="modal-overlay" id="teacher-modal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('teacher')">✕</button>
-    <div class="modal-title">TEACHER</div>
-    <div class="modal-sub">// instructor access</div>
-
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('teacher','login')">LOGIN</button>
-    </div>
-
-    <div class="tab-panel active" id="teacher-login-panel">
-      <div class="form-group">
-        <label>EMAIL</label>
-        <input type="email" id="t-email" placeholder="teacher@demo.com" />
-      </div>
-      <div class="form-group">
-        <label>PASSWORD</label>
-        <input type="password" id="t-pass" placeholder="••••••••" />
-      </div>
-      <button class="btn-primary" onclick="doTeacherLogin()">LOGIN →</button>
-      <div class="error-msg" id="t-error"></div>
-      <div class="demo-hint">Demo: <strong>teacher@demo.com</strong> / <strong>teacher123</strong></div>
-    </div>
-  </div>
-</div>
-
-<!-- Student Modal -->
-<div class="modal-overlay" id="student-modal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal('student')">✕</button>
-    <div class="modal-title">STUDENT</div>
-    <div class="modal-sub">// apprentice access</div>
-
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('student','login')">LOGIN</button>
-      <button class="tab-btn" onclick="switchTab('student','register')">REGISTER</button>
-    </div>
-
-    <div class="tab-panel active" id="student-login-panel">
-      <div class="form-group">
-        <label>EMAIL</label>
-        <input type="email" id="s-email" placeholder="student@demo.com" />
-      </div>
-      <div class="form-group">
-        <label>PASSWORD</label>
-        <input type="password" id="s-pass" placeholder="••••••••" />
-      </div>
-      <button class="btn-primary red-btn" onclick="doStudentLogin()">LOGIN →</button>
-      <div class="error-msg" id="s-error"></div>
-      <div class="demo-hint">Demo: <strong>student@demo.com</strong> / <strong>student123</strong></div>
-    </div>
-
-    <div class="tab-panel" id="student-register-panel">
-      <div class="form-group">
-        <label>FULL NAME</label>
-        <input type="text" id="r-name" placeholder="Alex Johnson" />
-      </div>
-      <div class="form-group">
-        <label>EMAIL</label>
-        <input type="email" id="r-email" placeholder="you@example.com" />
-      </div>
-      <div class="form-group">
-        <label>PASSWORD</label>
-        <input type="password" id="r-pass" placeholder="Choose password" />
-      </div>
-      <button class="btn-primary red-btn" onclick="doRegister()">CREATE ACCOUNT →</button>
-      <div class="error-msg" id="r-error"></div>
-    </div>
-  </div>
-</div>
-
 <script src="../src/data/questions.js"></script>
 <script src="../src/js/core/app.js"></script>
 <script>
@@ -513,62 +439,6 @@
   if (sess) {
     window.location.href = sess.role === 'teacher' ? 'pages/teacher.html' : 'pages/student.html';
   }
-
-  function openModal(role) {
-    document.getElementById(role + '-modal').classList.add('active');
-    event && event.preventDefault();
-  }
-  function closeModal(role) {
-    document.getElementById(role + '-modal').classList.remove('active');
-  }
-
-  function switchTab(role, tab) {
-    const prefix = role === 'teacher' ? 't' : (tab === 'register' ? 'r' : 's');
-    document.querySelectorAll(`#${role}-modal .tab-btn`).forEach((b,i) => {
-      b.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='register'));
-    });
-    document.querySelectorAll(`#${role}-modal .tab-panel`).forEach((p,i) => {
-      p.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='register'));
-    });
-  }
-
-  function doTeacherLogin() {
-    const email = document.getElementById('t-email').value.trim();
-    const pass = document.getElementById('t-pass').value;
-    const sess = App.loginTeacher(email, pass);
-    if (!sess) { document.getElementById('t-error').textContent = 'Invalid credentials.'; return; }
-    window.location.href = 'pages/teacher.html';
-  }
-
-  function doStudentLogin() {
-    const email = document.getElementById('s-email').value.trim();
-    const pass = document.getElementById('s-pass').value;
-    const sess = App.loginStudent(email, pass);
-    if (!sess) { document.getElementById('s-error').textContent = 'Invalid credentials.'; return; }
-    window.location.href = 'pages/student.html';
-  }
-
-  function doRegister() {
-    const name = document.getElementById('r-name').value.trim();
-    const email = document.getElementById('r-email').value.trim();
-    const pass = document.getElementById('r-pass').value;
-    if (!name || !email || !pass) { document.getElementById('r-error').textContent = 'All fields required.'; return; }
-    const res = App.registerStudent(email, pass, name);
-    if (res.error) { document.getElementById('r-error').textContent = res.error; return; }
-    App.loginStudent(email, pass);
-    window.location.href = 'pages/student.html';
-  }
-
-  // Enter key support
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      if (document.getElementById('teacher-modal').classList.contains('active')) doTeacherLogin();
-      else if (document.getElementById('student-modal').classList.contains('active')) {
-        const loginActive = document.getElementById('student-login-panel').classList.contains('active');
-        loginActive ? doStudentLogin() : doRegister();
-      }
-    }
-  });
 </script>
 </body>
 </html>

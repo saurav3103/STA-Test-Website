@@ -3,36 +3,27 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
 
   const email = document.getElementById('email').value.trim().toLowerCase();
   const password = document.getElementById('password').value.trim();
+  const role = document.getElementById('role').value;
 
-  if (!email || !password) {
+  if (!email || !password || !role) {
     showMessage('Please fill all fields', 'error');
     return;
   }
 
-  // Try teacher login first
-  let session = App.loginTeacher(email, password);
-  
-  if (session) {
-    showMessage(`Login successful! Redirecting...`, 'success');
-    setTimeout(() => {
-      window.location.href = 'teacher.html';
-    }, 1500);
-    return;
-  }
+  const session = role === 'teacher'
+    ? App.loginTeacher(email, password)
+    : App.loginStudent(email, password);
 
-  // Try student login
-  session = App.loginStudent(email, password);
-  
   if (session) {
-    showMessage(`Login successful! Redirecting...`, 'success');
+    showMessage('Login successful! Redirecting...', 'success');
     setTimeout(() => {
-      window.location.href = 'student.html';
-    }, 1500);
+      window.location.href = role === 'teacher' ? 'teacher.html' : 'student.html';
+    }, 1200);
     return;
   }
 
   // Login failed
-  showMessage('Invalid email or password', 'error');
+  showMessage(`Invalid ${role} credentials`, 'error');
 });
 
 function showMessage(text, type) {
