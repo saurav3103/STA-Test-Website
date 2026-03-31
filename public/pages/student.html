@@ -147,7 +147,7 @@
   <div class="badge">STUDENT PORTAL</div>
   <div class="header-right">
     <span class="user-name" id="user-name-display"></span>
-    <button class="btn-logout" onclick="App.logout(); window.location.href='index.html'">LOGOUT</button>
+    <button class="btn-logout" onclick="App.logout(); window.location.href='../index.html'">LOGOUT</button>
   </div>
 </header>
 
@@ -210,8 +210,8 @@
   </main>
 </div>
 
-<script src="questions.js"></script>
-<script src="app.js"></script>
+<script src="../../src/data/questions.js"></script>
+<script src="../../src/js/core/app.js"></script>
 <script>
   const sess = App.requireAuth('student');
   if (sess) document.getElementById('user-name-display').textContent = sess.name;

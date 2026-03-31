@@ -81,7 +81,7 @@ const App = (() => {
   function requireAuth(role) {
     const s = getSession();
     if (!s || (role && s.role !== role)) {
-      window.location.href = 'index.html';
+      window.location.href = '../index.html';
       return null;
     }
     return s;

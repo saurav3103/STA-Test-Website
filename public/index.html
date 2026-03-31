@@ -397,9 +397,9 @@
   <nav>
     <a href="#" class="nav-link" onclick="openModal('teacher')">TEACHER LOGIN</a>
     <a href="#" class="nav-link" onclick="openModal('student')">STUDENT LOGIN</a>
-    <a href="login.html" class="nav-link">LOGIN</a>
-    <a href="register.html" class="nav-link">REGISTER</a>
-    <a href="admin.html" class="nav-link">ADMIN</a>
+    <a href="pages/login.html" class="nav-link">LOGIN</a>
+    <a href="pages/register.html" class="nav-link">REGISTER</a>
+    <a href="pages/admin.html" class="nav-link">ADMIN</a>
   </nav>
 </header>
 
@@ -503,15 +503,15 @@
   </div>
 </div>
 
-<script src="questions.js"></script>
-<script src="app.js"></script>
+<script src="../src/data/questions.js"></script>
+<script src="../src/js/core/app.js"></script>
 <script>
   App.seedDefaultTeacher();
 
   // Redirect if already logged in
   const sess = App.getSession();
   if (sess) {
-    window.location.href = sess.role === 'teacher' ? 'teacher.html' : 'student.html';
+    window.location.href = sess.role === 'teacher' ? 'pages/teacher.html' : 'pages/student.html';
   }
 
   function openModal(role) {
@@ -537,7 +537,7 @@
     const pass = document.getElementById('t-pass').value;
     const sess = App.loginTeacher(email, pass);
     if (!sess) { document.getElementById('t-error').textContent = 'Invalid credentials.'; return; }
-    window.location.href = 'teacher.html';
+    window.location.href = 'pages/teacher.html';
   }
 
   function doStudentLogin() {
@@ -545,7 +545,7 @@
     const pass = document.getElementById('s-pass').value;
     const sess = App.loginStudent(email, pass);
     if (!sess) { document.getElementById('s-error').textContent = 'Invalid credentials.'; return; }
-    window.location.href = 'student.html';
+    window.location.href = 'pages/student.html';
   }
 
   function doRegister() {
@@ -556,7 +556,7 @@
     const res = App.registerStudent(email, pass, name);
     if (res.error) { document.getElementById('r-error').textContent = res.error; return; }
     App.loginStudent(email, pass);
-    window.location.href = 'student.html';
+    window.location.href = 'pages/student.html';
   }
 
   // Enter key support
