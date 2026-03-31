@@ -404,7 +404,7 @@
 <main class="hero">
   <div class="hero-badge">⚡ APPRENTICE ELECTRICIAN · GRADE 12</div>
   <h1>MASTER<span class="line2">THE WIRE</span></h1>
-  <p class="hero-sub">A professional test platform for apprentice electricians. Teachers build papers from a curated 50-question bank. Students conquer them with a code.</p>
+  <p class="hero-sub">A professional test platform for apprentice electricians. Teachers build papers from a curated 1,800+ question bank. Students conquer them with a code.</p>
 
   <div class="role-grid">
     <a class="role-card" href="pages/login.html">
@@ -423,22 +423,32 @@
 </main>
 
 <div class="stats-strip">
-  <div class="stat"><div class="stat-val">50</div><div class="stat-label">QUESTIONS</div></div>
-  <div class="stat"><div class="stat-val">8</div><div class="stat-label">TOPICS</div></div>
+  <div class="stat"><div class="stat-val" id="stat-questions">4,364</div><div class="stat-label">QUESTIONS</div></div>
+  <div class="stat"><div class="stat-val">26</div><div class="stat-label">TOPICS</div></div>
   <div class="stat"><div class="stat-val">∞</div><div class="stat-label">TEST PAPERS</div></div>
   <div class="stat"><div class="stat-val">60%</div><div class="stat-label">PASS MARK</div></div>
 </div>
 
 <script src="../src/data/questions.js"></script>
+<script src="../src/data/asian_book_questions.js"></script>
 <script src="../src/js/core/app.js"></script>
 <script>
+  // Merge Asian Book questions with existing question bank
+  if (typeof ASIAN_BOOK_QUESTIONS !== 'undefined' && Array.isArray(ASIAN_BOOK_QUESTIONS)) {
+    QUESTION_BANK.push(...ASIAN_BOOK_QUESTIONS);
+    console.log('✓ Asian Book questions integrated:', ASIAN_BOOK_QUESTIONS.length, 'questions added');
+    console.log('✓ Total questions available:', QUESTION_BANK.length);
+  }
+
   App.seedDefaultTeacher();
 
+  /*
   // Redirect if already logged in
   const sess = App.getSession();
   if (sess) {
     window.location.href = sess.role === 'teacher' ? 'pages/teacher.html' : 'pages/student.html';
   }
+  */
 </script>
 </body>
 </html>

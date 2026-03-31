@@ -61,6 +61,28 @@
   .q-topic-tag { font-family: var(--font-mono); font-size: 10px; background: rgba(245,166,35,0.1); color: var(--accent2); border: 1px solid rgba(245,166,35,0.2); padding: 3px 10px; border-radius: 2px; letter-spacing: 2px; }
   .q-question { font-size: 20px; font-weight: 600; line-height: 1.5; margin-bottom: 32px; }
 
+  .q-image-wrap { margin: -8px 0 24px; display: none; }
+  .q-image-wrap.show { display: block; }
+  .q-image {
+    width: 100%;
+    max-width: 640px;
+    max-height: 360px;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    padding: 8px;
+  }
+  .q-image-missing {
+    display: none;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+  .q-image-missing.show { display: block; }
+
   .options-grid { display: grid; gap: 12px; }
   .option-btn {
     display: flex; align-items: center; gap: 16px;
@@ -151,6 +173,10 @@
         <div class="q-topic-tag" id="q-topic"></div>
       </div>
       <div class="q-question" id="q-text"></div>
+      <div class="q-image-wrap" id="q-image-wrap">
+        <img class="q-image" id="q-image" alt="Question related diagram" loading="lazy" />
+        <div class="q-image-missing" id="q-image-missing">Diagram reference detected, but no image has been mapped for this question yet.</div>
+      </div>
       <div class="options-grid" id="options-grid"></div>
 
       <div class="q-nav-row">
@@ -187,6 +213,7 @@
 </div>
 
 <script src="../../src/data/questions.js"></script>
+<script src="../../src/data/asian_book_questions.js"></script>
 <script src="../../src/js/core/app.js"></script>
 <script>
   const sess = App.requireAuth('student');
@@ -201,6 +228,8 @@
   let answers = {};
   let currentIdx = 0;
   let timerInterval = null;
+
+  const QUESTION_IMAGE_MAP = window.QUESTION_IMAGE_MAP || {};
 
   // ── Setup ──
   document.getElementById('tb-title').textContent = paper.title;
@@ -239,6 +268,29 @@
     document.getElementById('q-counter').textContent = `${currentIdx + 1} / ${questions.length}`;
     document.getElementById('prev-btn').disabled = currentIdx === 0;
     document.getElementById('next-btn').textContent = currentIdx === questions.length - 1 ? 'REVIEW' : 'NEXT →';
+
+    const imageWrap = document.getElementById('q-image-wrap');
+    const imageEl = document.getElementById('q-image');
+    const imageMissingEl = document.getElementById('q-image-missing');
+    const imageSrc = q.image || q.imageUrl || QUESTION_IMAGE_MAP[q.id] || '';
+    const mentionsFigure = /figure|diagram|shown below|given below|circuit below/i.test(String(q.question || ''));
+
+    if (imageSrc) {
+      imageEl.src = imageSrc;
+      imageEl.style.display = 'block';
+      imageMissingEl.classList.remove('show');
+      imageWrap.classList.add('show');
+    } else if (mentionsFigure) {
+      imageEl.removeAttribute('src');
+      imageEl.style.display = 'none';
+      imageMissingEl.classList.add('show');
+      imageWrap.classList.add('show');
+    } else {
+      imageEl.removeAttribute('src');
+      imageEl.style.display = 'none';
+      imageMissingEl.classList.remove('show');
+      imageWrap.classList.remove('show');
+    }
 
     const opts = document.getElementById('options-grid');
     opts.innerHTML = q.options.map((opt, i) => `

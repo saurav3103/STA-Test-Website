@@ -265,13 +265,19 @@
           <div class="page-sub">// all registered student accounts</div>
         </div>
       </div>
+      <div class="card" style="margin-bottom:18px;">
+        <div class="card-title">COACHING INSIGHTS</div>
+        <div id="students-insights" style="margin-top:14px;"></div>
+      </div>
       <div class="card" style="overflow:auto;">
         <table class="results-table">
           <thead>
             <tr>
               <th>NAME</th>
               <th>EMAIL</th>
-              <th>ACCOUNT TYPE</th>
+              <th>ATTEMPTS</th>
+              <th>AVG SCORE</th>
+              <th>FOCUS AREAS</th>
             </tr>
           </thead>
           <tbody id="students-body"></tbody>
@@ -302,6 +308,7 @@
               <th>PAPER</th>
               <th>CODE</th>
               <th>SCORE</th>
+              <th>WEAK TOPIC</th>
               <th>TIME</th>
               <th>SUBMITTED</th>
               <th>ACTION</th>
@@ -338,10 +345,38 @@
 </div>
 
 <script src="../../src/data/questions.js"></script>
+<script src="../../src/data/asian_book_questions.js"></script>
 <script src="../../src/js/core/app.js"></script>
 <script>
   const sess = App.requireAuth('teacher');
   if (sess) document.getElementById('user-name-display').textContent = sess.name;
+  const QUESTION_BY_ID = new Map(QUESTION_BANK.map(q => [q.id, q]));
+
+  function getWeakTopic(result) {
+    if (!result || !Array.isArray(result.breakdown) || !result.breakdown.length) {
+      return 'No data';
+    }
+
+    const topicStats = {};
+    result.breakdown.forEach(item => {
+      const topic = QUESTION_BY_ID.get(item.id)?.topic || 'Uncategorized';
+      if (!topicStats[topic]) topicStats[topic] = { wrong: 0, total: 0 };
+      topicStats[topic].total += 1;
+      if (!item.correct) topicStats[topic].wrong += 1;
+    });
+
+    const weakest = Object.entries(topicStats)
+      .filter(([, v]) => v.wrong > 0)
+      .sort((a, b) => {
+        const ratioDiff = (b[1].wrong / b[1].total) - (a[1].wrong / a[1].total);
+        if (ratioDiff !== 0) return ratioDiff;
+        return b[1].wrong - a[1].wrong;
+      })[0];
+
+    if (!weakest) return 'Strong overall';
+    const [topic, stats] = weakest;
+    return `${topic} (${stats.wrong}/${stats.total} wrong)`;
+  }
 
   function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -414,7 +449,9 @@
   // ── Dashboard ──
   function renderDashboard() {
     const papers = App.getTeacherPapers(sess.email);
-    const allResults = papers.flatMap(p => App.getPaperResults(p.code));
+    const allResults = papers
+      .flatMap(p => App.getPaperResults(p.code))
+      .sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
     const passed = allResults.filter(r => r.passed).length;
     const avgScore = allResults.length ? Math.round(allResults.reduce((s, r) => s + r.percentage, 0) / allResults.length) : 0;
 
@@ -437,10 +474,10 @@
 
     document.getElementById('dash-results').innerHTML = allResults.slice(0, 4).map(r => `
       <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
-        <span class="score-pill ${r.passed ? 'score-pass' : 'score-fail'}">${r.percentage}%</span>
+        <span class="score-pill ${r.passed ? 'score-pass' : 'score-fail'}">${r.score}/${r.total} (${r.percentage}%)</span>
         <div style="flex:1;">
           <div style="font-size:13px;">${r.studentName}</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${r.paperCode}</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${r.paperCode} · ${getWeakTopic(r)}</div>
         </div>
       </div>
     `).join('') || '<div style="color:var(--muted);font-size:13px;padding:10px 0;">No submissions yet.</div>';
@@ -528,15 +565,78 @@
   // ── Students ──
   function renderStudents() {
     const students = JSON.parse(localStorage.getItem('et_students')) || {};
-    const rows = Object.entries(students)
-      .map(([email, data]) => ({
-        name: data.name || 'Student',
-        email,
-      }))
+    const papers = App.getTeacherPapers(sess.email);
+    const teacherResults = papers.flatMap(p => App.getPaperResults(p.code));
+
+    const studentMap = new Map(
+      Object.entries(students).map(([email, data]) => [email, { name: data.name || 'Student', email }])
+    );
+
+    teacherResults.forEach(r => {
+      if (!studentMap.has(r.studentEmail)) {
+        studentMap.set(r.studentEmail, { name: r.studentName || 'Student', email: r.studentEmail });
+      }
+    });
+
+    const rows = Array.from(studentMap.values())
+      .map(student => {
+        const attempts = teacherResults.filter(r => r.studentEmail === student.email);
+        const avg = attempts.length
+          ? Math.round(attempts.reduce((sum, r) => sum + r.percentage, 0) / attempts.length)
+          : null;
+
+        const topicStats = {};
+        attempts.forEach(r => {
+          (r.breakdown || []).forEach(item => {
+            const topic = QUESTION_BY_ID.get(item.id)?.topic || 'Uncategorized';
+            if (!topicStats[topic]) topicStats[topic] = { wrong: 0, total: 0 };
+            topicStats[topic].total += 1;
+            if (!item.correct) topicStats[topic].wrong += 1;
+          });
+        });
+
+        const weakest = Object.entries(topicStats)
+          .filter(([, stats]) => stats.wrong > 0)
+          .sort((a, b) => {
+            const ratioDiff = (b[1].wrong / b[1].total) - (a[1].wrong / a[1].total);
+            if (ratioDiff !== 0) return ratioDiff;
+            return b[1].wrong - a[1].wrong;
+          })
+          .slice(0, 3)
+          .map(([topic, stats]) => `${topic} (${stats.wrong}/${stats.total})`);
+
+        return {
+          ...student,
+          attempts: attempts.length,
+          avg,
+          weakest,
+        };
+      })
       .sort((a, b) => a.name.localeCompare(b.name));
 
     const tbody = document.getElementById('students-body');
     const noStudents = document.getElementById('no-students');
+    const insights = document.getElementById('students-insights');
+
+    const studentsWithAttempts = rows
+      .filter(s => s.attempts > 0)
+      .sort((a, b) => b.attempts - a.attempts || a.name.localeCompare(b.name));
+
+    if (!studentsWithAttempts.length) {
+      insights.innerHTML = '<div style="color:var(--muted);font-size:13px;">No student submissions yet to analyze.</div>';
+    } else {
+      insights.innerHTML = studentsWithAttempts.slice(0, 6).map(s => `
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);">
+          <div style="min-width:170px;">
+            <div style="font-size:13px;font-weight:600;">${s.name}</div>
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${s.attempts} attempt${s.attempts !== 1 ? 's' : ''} · ${s.avg}% avg</div>
+          </div>
+          <div style="flex:1;font-family:var(--font-mono);font-size:11px;color:var(--muted);">
+            ${s.weakest.length ? s.weakest.map(w => `<span style="display:inline-block;margin:0 8px 6px 0;padding:3px 8px;border:1px solid var(--border);border-radius:999px;">${w}</span>`).join('') : 'Strong overall'}
+          </div>
+        </div>
+      `).join('');
+    }
 
     if (!rows.length) {
       tbody.innerHTML = '';
@@ -549,7 +649,9 @@
       <tr>
         <td><strong>${s.name}</strong></td>
         <td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">${s.email}</td>
-        <td><span class="score-pill score-pass">STUDENT</span></td>
+        <td style="font-family:var(--font-mono);font-size:12px;">${s.attempts}</td>
+        <td>${s.avg === null ? '<span style="color:var(--muted);">-</span>' : `<span class="score-pill ${s.avg >= 60 ? 'score-pass' : 'score-fail'}">${s.avg}%</span>`}</td>
+        <td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">${s.weakest.length ? s.weakest.join(' | ') : 'Strong overall'}</td>
       </tr>
     `).join('');
   }
@@ -584,6 +686,7 @@
         <td>${r.paperTitle}</td>
         <td style="font-family:var(--font-display);font-size:18px;letter-spacing:2px;color:var(--accent);">${r.paperCode}</td>
         <td><span class="score-pill ${r.passed?'score-pass':'score-fail'}">${r.score}/${r.total} (${r.percentage}%)</span></td>
+        <td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">${getWeakTopic(r)}</td>
         <td style="font-family:var(--font-mono);font-size:12px;">${r.timeTaken}</td>
         <td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">${new Date(r.submittedAt).toLocaleString()}</td>
         <td><a href="results.html?id=${r.id}" style="font-family:var(--font-mono);font-size:11px;color:var(--accent);text-decoration:none;">VIEW →</a></td>

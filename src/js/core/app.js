@@ -27,6 +27,41 @@ const App = (() => {
     return a;
   }
 
+  function looksLikePrompt(text) {
+    if (typeof text !== 'string') return false;
+    const t = text.trim();
+    if (!t) return false;
+    if (/[?:]$/.test(t)) return true;
+    return /^(which|what|where|when|why|how|name|identify|the\s|this\s|to\s)/i.test(t);
+  }
+
+  function sanitizeQuestionBank() {
+    if (typeof QUESTION_BANK === 'undefined' || !Array.isArray(QUESTION_BANK)) return;
+
+    const cleaned = QUESTION_BANK.filter(q => {
+      if (!q || !Array.isArray(q.options) || q.options.length !== 4) return false;
+
+      const promptLikeOptionExists = q.options.some(opt => looksLikePrompt(opt));
+      const questionWords = String(q.question || '').trim().split(/\s+/).filter(Boolean).length;
+      const questionLooksLikeShortAnswer = questionWords > 0 && questionWords <= 10 && !looksLikePrompt(q.question);
+
+      // Drop split/misaligned rows where the prompt ended up inside options.
+      if (promptLikeOptionExists && questionLooksLikeShortAnswer && q.answer === 0) {
+        return false;
+      }
+
+      return true;
+    });
+
+    if (cleaned.length !== QUESTION_BANK.length) {
+      const removed = QUESTION_BANK.length - cleaned.length;
+      QUESTION_BANK.splice(0, QUESTION_BANK.length, ...cleaned);
+      console.warn('Filtered malformed question rows:', removed);
+    }
+  }
+
+  sanitizeQuestionBank();
+
   // ── Auth ─────────────────────────────────────────────────────────────────
   function seedDefaultTeacher() {
     let teachers = load(STORAGE_KEYS.TEACHERS) || {};
@@ -187,6 +222,31 @@ const App = (() => {
     return shuffle(QUESTION_BANK).slice(0, count).map(q => q.id);
   }
 
+  // ── Question Management (Asian Book Integration) ─────────────────────────
+  function getAsianBookQuestions() {
+    return (typeof ASIAN_BOOK_QUESTIONS !== 'undefined') ? ASIAN_BOOK_QUESTIONS : [];
+  }
+
+  function getQuestionsByTopic(topic, questionBank = null) {
+    const bank = questionBank || QUESTION_BANK;
+    return bank.filter(q => q.topic && q.topic.includes(topic));
+  }
+
+  function getRandomQuestions(count, questionBank = null) {
+    const bank = questionBank || QUESTION_BANK;
+    return shuffle(bank).slice(0, count);
+  }
+
+  function getAllQuestionStats() {
+    const total = QUESTION_BANK.length;
+    const topicGroups = {};
+    QUESTION_BANK.forEach(q => {
+      const topic = q.topic || 'Uncategorized';
+      topicGroups[topic] = (topicGroups[topic] || 0) + 1;
+    });
+    return { total, topics: topicGroups, topicCount: Object.keys(topicGroups).length };
+  }
+
   // ── Public API ────────────────────────────────────────────────────────────
   return {
     seedDefaultTeacher, loginTeacher, loginStudent, registerStudent, registerTeacher,
@@ -194,5 +254,6 @@ const App = (() => {
     createPaper, getPaper, getTeacherPapers, togglePaperActive, deletePaper,
     saveResult, getPaperResults, getStudentResults, getResult,
     generatePaperQuestions, shuffle,
+    getAsianBookQuestions, getQuestionsByTopic, getRandomQuestions, getAllQuestionStats,
   };
 })();
