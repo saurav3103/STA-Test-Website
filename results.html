@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ElectroTest — Results</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0c10; --surface: #111418; --surface2: #1a1f27;
+    --border: #252b36; --accent: #e8380d; --accent2: #f5a623;
+    --text: #e8eaf0; --muted: #6b7585; --success: #2ecc71; --danger: #e74c3c;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-body: 'IBM Plex Sans', sans-serif;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(245,166,35,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(245,166,35,0.03) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events: none; z-index: 0;
+  }
+
+  header { position: relative; z-index: 10; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; align-items: center; height: 60px; gap: 16px; }
+  .logo { font-family: var(--font-display); font-size: 22px; letter-spacing: 2px; text-decoration: none; color: var(--text); }
+  .logo span { color: var(--accent2); }
+  .header-right { margin-left: auto; display: flex; gap: 12px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 6px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; border: none; text-decoration: none; }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
+  .btn-accent { background: var(--accent2); color: #000; font-weight: 600; }
+  .btn-accent:hover { background: #ffc04a; }
+
+  main { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 48px 24px; }
+
+  /* Score Hero */
+  .score-hero { text-align: center; padding: 48px 0; animation: fadeUp 0.5s ease both; }
+  .result-label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 4px; margin-bottom: 16px; }
+  .result-label.pass { color: var(--success); }
+  .result-label.fail { color: var(--danger); }
+  .score-circle {
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    position: relative;
+  }
+  .score-circle.pass { border: 4px solid var(--success); box-shadow: 0 0 60px rgba(46,204,113,0.2); }
+  .score-circle.fail { border: 4px solid var(--danger); box-shadow: 0 0 60px rgba(231,76,60,0.15); }
+  .score-pct { font-family: var(--font-display); font-size: 72px; letter-spacing: 2px; line-height: 1; }
+  .score-circle.pass .score-pct { color: var(--success); }
+  .score-circle.fail .score-pct { color: var(--danger); }
+  .score-raw { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .paper-name { font-family: var(--font-display); font-size: 36px; letter-spacing: 3px; margin-bottom: 8px; }
+  .student-line { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+
+  /* Meta grid */
+  .meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; animation: fadeUp 0.5s 0.1s ease both; }
+  .meta-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; text-align: center; }
+  .meta-val { font-family: var(--font-display); font-size: 32px; letter-spacing: 2px; color: var(--accent2); }
+  .meta-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; color: var(--muted); margin-top: 4px; }
+
+  /* Topic summary */
+  .section-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 3px; color: var(--muted); margin-bottom: 16px; }
+  .topic-summary { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 32px; animation: fadeUp 0.5s 0.2s ease both; }
+  .topic-row { display: flex; align-items: center; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(37,43,54,0.6); }
+  .topic-row:last-child { border-bottom: none; }
+  .topic-name { font-family: var(--font-mono); font-size: 12px; min-width: 180px; }
+  .topic-bar-wrap { flex: 1; background: var(--surface2); border-radius: 3px; height: 8px; overflow: hidden; }
+  .topic-bar { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+  .topic-score { font-family: var(--font-display); font-size: 20px; letter-spacing: 2px; min-width: 60px; text-align: right; }
+  .topic-raw { font-family: var(--font-mono); font-size: 11px; color: var(--muted); min-width: 60px; text-align: right; }
+
+  /* Question Breakdown */
+  .q-breakdown { animation: fadeUp 0.5s 0.3s ease both; }
+  .q-item { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 12px; }
+  .q-item-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+  .q-result-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .q-item-num { font-family: var(--font-mono); font-size: 11px; color: var(--muted); flex-shrink: 0; min-width: 28px; }
+  .q-item-text { font-size: 14px; font-weight: 600; flex: 1; }
+  .q-topic-badge { font-family: var(--font-mono); font-size: 10px; background: rgba(245,166,35,0.1); color: var(--accent2); border: 1px solid rgba(245,166,35,0.2); padding: 2px 8px; border-radius: 2px; flex-shrink: 0; }
+  .q-opts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .q-opt { font-family: var(--font-mono); font-size: 12px; padding: 8px 12px; border-radius: 4px; background: var(--bg); color: var(--muted); }
+  .q-opt.correct-ans { background: rgba(46,204,113,0.1); color: var(--success); border: 1px solid rgba(46,204,113,0.3); }
+  .q-opt.wrong-ans { background: rgba(231,76,60,0.1); color: var(--danger); border: 1px solid rgba(231,76,60,0.3); text-decoration: line-through; }
+  .q-opt.not-answered { background: rgba(107,117,133,0.1); color: var(--muted); border: 1px dashed var(--border); }
+
+  /* Filter toggles */
+  .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; }
+  .filter-btn { font-family: var(--font-mono); font-size: 11px; padding: 6px 14px; border-radius: 4px; border: 1px solid var(--border); color: var(--muted); background: none; cursor: pointer; transition: all 0.2s; }
+  .filter-btn.active { border-color: var(--accent2); color: var(--accent2); background: rgba(245,166,35,0.08); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="javascript:history.back()">← Electro<span>Test</span></a>
+  <div class="header-right" id="header-btns"></div>
+</header>
+
+<main>
+  <div id="loading" style="text-align:center;padding:80px;font-family:var(--font-mono);color:var(--muted);">Loading results...</div>
+  <div id="result-content" style="display:none;"></div>
+</main>
+
+<script src="questions.js"></script>
+<script src="app.js"></script>
+<script>
+  const sess = App.requireAuth();
+  const params = new URLSearchParams(window.location.search);
+  const resultId = params.get('id');
+
+  if (!resultId) { window.location.href = sess.role === 'teacher' ? 'teacher.html' : 'student.html'; }
+
+  const result = App.getResult(resultId);
+  if (!result) {
+    document.getElementById('loading').textContent = 'Result not found.';
+  } else {
+    renderResult(result);
+  }
+
+  function renderResult(r) {
+    document.title = `ElectroTest — ${r.paperTitle} Result`;
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('result-content').style.display = 'block';
+
+    const isPass = r.passed;
+
+    // Header buttons
+    const backUrl = sess.role === 'teacher' ? 'teacher.html' : 'student.html';
+    document.getElementById('header-btns').innerHTML = `
+      <a href="${backUrl}" class="btn btn-outline">← DASHBOARD</a>
+      ${sess.role === 'student' ? '<a href="student.html" class="btn btn-accent">TAKE ANOTHER TEST</a>' : ''}
+    `;
+
+    // Topic breakdown
+    const topicStats = {};
+    r.breakdown.forEach(b => {
+      const q = QUESTION_BANK.find(q => q.id === b.id);
+      if (!q) return;
+      const t = q.topic;
+      if (!topicStats[t]) topicStats[t] = { correct: 0, total: 0 };
+      topicStats[t].total++;
+      if (b.correct) topicStats[t].correct++;
+    });
+
+    const topicRows = Object.entries(topicStats).map(([topic, s]) => {
+      const pct = Math.round((s.correct / s.total) * 100);
+      const color = pct >= r.passMark ? 'var(--success)' : 'var(--danger)';
+      return `
+        <div class="topic-row">
+          <div class="topic-name">${topic}</div>
+          <div class="topic-bar-wrap"><div class="topic-bar" style="width:${pct}%;background:${color};"></div></div>
+          <div class="topic-score" style="color:${color};">${pct}%</div>
+          <div class="topic-raw">${s.correct}/${s.total}</div>
+        </div>
+      `;
+    }).join('');
+
+    // Question items
+    let allBreakdown = [...r.breakdown];
+    let filterMode = 'all';
+
+    function getFilteredBreakdown() {
+      if (filterMode === 'correct') return allBreakdown.filter(b => b.correct);
+      if (filterMode === 'wrong') return allBreakdown.filter(b => !b.correct);
+      return allBreakdown;
+    }
+
+    function renderBreakdown() {
+      const filtered = getFilteredBreakdown();
+      document.getElementById('breakdown-list').innerHTML = filtered.map((b, i) => {
+        const q = QUESTION_BANK.find(q => q.id === b.id);
+        const topic = q ? q.topic : '';
+        const studentAnsIdx = b.studentAns;
+        const correctAnsIdx = b.correctAns;
+
+        const optHtml = b.options.map((opt, idx) => {
+          let cls = 'q-opt';
+          if (idx === correctAnsIdx) cls += ' correct-ans';
+          else if (idx === studentAnsIdx && idx !== correctAnsIdx) cls += ' wrong-ans';
+          const label = String.fromCharCode(65 + idx);
+          return `<div class="${cls}">${label}. ${opt}</div>`;
+        }).join('');
+
+        return `
+          <div class="q-item">
+            <div class="q-item-header">
+              <div class="q-result-icon">${b.correct ? '✅' : '❌'}</div>
+              <div class="q-item-num">Q${i + 1}</div>
+              <div class="q-item-text">${b.question}</div>
+              <div class="q-topic-badge">${topic}</div>
+            </div>
+            <div class="q-opts-row">${optHtml}</div>
+            ${b.studentAns === undefined ? '<div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:8px;">⚠ Not answered</div>' : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    document.getElementById('result-content').innerHTML = `
+      <div class="score-hero">
+        <div class="result-label ${isPass ? 'pass' : 'fail'}">${isPass ? '✓ PASSED' : '✗ FAILED'}</div>
+        <div class="score-circle ${isPass ? 'pass' : 'fail'}">
+          <div class="score-pct">${r.percentage}%</div>
+          <div class="score-raw">${r.score} / ${r.total}</div>
+        </div>
+        <div class="paper-name">${r.paperTitle}</div>
+        <div class="student-line">${r.studentName} · ${r.paperCode} · ${new Date(r.submittedAt).toLocaleString()}</div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-card"><div class="meta-val" style="color:var(--success);">${r.score}</div><div class="meta-label">CORRECT</div></div>
+        <div class="meta-card"><div class="meta-val" style="color:var(--danger);">${r.total - r.score}</div><div class="meta-label">WRONG</div></div>
+        <div class="meta-card"><div class="meta-val">${r.timeTaken}</div><div class="meta-label">TIME TAKEN</div></div>
+        <div class="meta-card"><div class="meta-val">${r.passMark}%</div><div class="meta-label">PASS MARK</div></div>
+      </div>
+
+      <div class="topic-summary">
+        <div class="section-title">TOPIC BREAKDOWN</div>
+        ${topicRows}
+      </div>
+
+      <div class="q-breakdown">
+        <div class="section-title">QUESTION REVIEW</div>
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="setFilter('all',this)">ALL (${r.breakdown.length})</button>
+          <button class="filter-btn" onclick="setFilter('correct',this)">✅ CORRECT (${r.breakdown.filter(b=>b.correct).length})</button>
+          <button class="filter-btn" onclick="setFilter('wrong',this)">❌ WRONG (${r.breakdown.filter(b=>!b.correct).length})</button>
+        </div>
+        <div id="breakdown-list"></div>
+      </div>
+    `;
+
+    renderBreakdown();
+
+    window.setFilter = function(mode, el) {
+      filterMode = mode;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      renderBreakdown();
+    };
+  }
+</script>
+</body>
+</html>

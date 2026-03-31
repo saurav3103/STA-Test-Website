@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ElectroTest — In Progress</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0c10; --surface: #111418; --surface2: #1a1f27;
+    --border: #252b36; --accent: #e8380d; --accent2: #f5a623;
+    --text: #e8eaf0; --muted: #6b7585; --success: #2ecc71; --danger: #e74c3c;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-body: 'IBM Plex Sans', sans-serif;
+  }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* Top Bar */
+  .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; height: 60px; display: flex; align-items: center; gap: 20px; position: sticky; top: 0; z-index: 50; }
+  .tb-title { font-family: var(--font-display); font-size: 20px; letter-spacing: 2px; flex: 1; }
+  .tb-code { font-family: var(--font-display); font-size: 22px; letter-spacing: 4px; color: var(--accent2); }
+
+  /* Timer */
+  .timer { display: flex; align-items: center; gap: 10px; }
+  .timer-display { font-family: var(--font-display); font-size: 32px; letter-spacing: 3px; color: var(--accent2); min-width: 100px; text-align: center; transition: color 0.3s; }
+  .timer-display.warning { color: var(--accent); }
+  .timer-display.critical { color: var(--danger); animation: pulse 0.5s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+  .timer-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; color: var(--muted); }
+
+  /* Progress bar */
+  .progress-bar { height: 3px; background: var(--border); position: sticky; top: 60px; z-index: 49; }
+  .progress-fill { height: 100%; background: var(--accent); transition: width 0.3s; }
+
+  /* Layout */
+  .test-layout { display: flex; flex: 1; min-height: 0; }
+
+  /* Question Navigator */
+  .q-nav { width: 240px; background: var(--surface); border-right: 1px solid var(--border); padding: 20px; overflow-y: auto; flex-shrink: 0; position: sticky; top: 63px; height: calc(100vh - 63px); }
+  .q-nav-title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 2px; color: var(--muted); margin-bottom: 16px; }
+  .q-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .q-nav-btn { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .q-nav-btn.answered { background: rgba(46,204,113,0.12); border-color: rgba(46,204,113,0.4); color: var(--success); }
+  .q-nav-btn.current { border-color: var(--accent2); color: var(--accent2); }
+  .q-nav-btn:hover { border-color: var(--accent2); }
+
+  .q-nav-stats { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .q-nav-stat { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; margin-bottom: 6px; }
+  .q-nav-stat span:first-child { color: var(--muted); }
+  .q-nav-stat span:last-child { color: var(--text); }
+
+  /* Question Area */
+  .q-area { flex: 1; padding: 40px; overflow-y: auto; }
+  .q-card { max-width: 740px; margin: 0 auto; }
+
+  .q-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .q-number { font-family: var(--font-display); font-size: 48px; letter-spacing: 3px; color: var(--border); min-width: 70px; }
+  .q-topic-tag { font-family: var(--font-mono); font-size: 10px; background: rgba(245,166,35,0.1); color: var(--accent2); border: 1px solid rgba(245,166,35,0.2); padding: 3px 10px; border-radius: 2px; letter-spacing: 2px; }
+  .q-question { font-size: 20px; font-weight: 600; line-height: 1.5; margin-bottom: 32px; }
+
+  .options-grid { display: grid; gap: 12px; }
+  .option-btn {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+    width: 100%;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 15px;
+  }
+  .option-btn:hover { border-color: rgba(245,166,35,0.5); background: var(--surface2); }
+  .option-btn.selected { border-color: var(--accent2); background: rgba(245,166,35,0.08); }
+  .option-letter {
+    width: 32px; height: 32px; flex-shrink: 0;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: var(--bg); border: 1px solid var(--border);
+    font-family: var(--font-display); font-size: 18px; color: var(--muted);
+    transition: all 0.15s;
+  }
+  .option-btn.selected .option-letter { background: var(--accent2); color: #000; border-color: var(--accent2); }
+
+  /* Nav buttons */
+  .q-nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; max-width: 740px; margin-left: auto; margin-right: auto; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 6px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 1px; cursor: pointer; transition: all 0.2s; border: none; }
+  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+  .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
+  .btn-accent { background: var(--accent2); color: #000; font-weight: 600; }
+  .btn-accent:hover { background: #ffc04a; }
+  .btn-submit { background: var(--accent); color: #fff; }
+  .btn-submit:hover { background: #ff5533; }
+  .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* Submit confirm overlay */
+  .overlay { position: fixed; inset: 0; background: rgba(10,12,16,0.95); display: flex; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+  .overlay.active { opacity: 1; pointer-events: all; }
+  .submit-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 48px; max-width: 420px; width: 100%; text-align: center; }
+  .submit-icon { font-size: 48px; margin-bottom: 16px; }
+  .submit-title { font-family: var(--font-display); font-size: 36px; letter-spacing: 3px; margin-bottom: 8px; }
+  .submit-sub { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-bottom: 32px; line-height: 1.7; }
+  .submit-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+  .submit-stat { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 14px; }
+  .submit-stat-val { font-family: var(--font-display); font-size: 28px; letter-spacing: 2px; color: var(--accent2); }
+  .submit-stat-label { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 2px; margin-top: 4px; }
+  .submit-actions { display: grid; gap: 12px; }
+
+  /* Time expired overlay */
+  .expired-overlay { position: fixed; inset: 0; background: rgba(10,12,16,0.97); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 300; text-align: center; }
+  .expired-overlay.show { display: flex; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-title" id="tb-title">Loading...</div>
+  <div class="tb-code" id="tb-code"></div>
+  <div class="timer">
+    <div class="timer-label">TIME</div>
+    <div class="timer-display" id="timer-display">--:--</div>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+</div>
+
+<div class="test-layout">
+  <aside class="q-nav">
+    <div class="q-nav-title">QUESTIONS</div>
+    <div class="q-nav-grid" id="q-nav-grid"></div>
+    <div class="q-nav-stats">
+      <div class="q-nav-stat"><span>Answered</span><span id="stat-answered">0</span></div>
+      <div class="q-nav-stat"><span>Remaining</span><span id="stat-remaining">0</span></div>
+    </div>
+    <div style="margin-top:24px;">
+      <button class="btn btn-submit" style="width:100%;justify-content:center;" onclick="showSubmit()">SUBMIT TEST</button>
+    </div>
+  </aside>
+
+  <main class="q-area">
+    <div class="q-card" id="q-card">
+      <div class="q-header">
+        <div class="q-number" id="q-num">01</div>
+        <div class="q-topic-tag" id="q-topic"></div>
+      </div>
+      <div class="q-question" id="q-text"></div>
+      <div class="options-grid" id="options-grid"></div>
+
+      <div class="q-nav-row">
+        <button class="btn btn-outline" id="prev-btn" onclick="navigate(-1)">← PREV</button>
+        <span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);" id="q-counter"></span>
+        <button class="btn btn-accent" id="next-btn" onclick="navigate(1)">NEXT →</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Submit overlay -->
+<div class="overlay" id="submit-overlay">
+  <div class="submit-card">
+    <div class="submit-icon">⚡</div>
+    <div class="submit-title">SUBMIT?</div>
+    <div class="submit-sub" id="submit-sub"></div>
+    <div class="submit-stats">
+      <div class="submit-stat"><div class="submit-stat-val" id="sub-answered"></div><div class="submit-stat-label">ANSWERED</div></div>
+      <div class="submit-stat"><div class="submit-stat-val" id="sub-remaining"></div><div class="submit-stat-label">UNANSWERED</div></div>
+    </div>
+    <div class="submit-actions">
+      <button class="btn btn-submit" style="justify-content:center;font-size:16px;padding:16px;" onclick="submitTest()">⚡ CONFIRM SUBMIT</button>
+      <button class="btn btn-outline" style="justify-content:center;" onclick="closeSubmit()">← CONTINUE TEST</button>
+    </div>
+  </div>
+</div>
+
+<!-- Time expired -->
+<div class="expired-overlay" id="expired-overlay">
+  <div style="font-size:64px;margin-bottom:24px;">⏱</div>
+  <div style="font-family:var(--font-display);font-size:64px;letter-spacing:4px;color:var(--danger);margin-bottom:16px;">TIME'S UP</div>
+  <div style="font-family:var(--font-mono);font-size:14px;color:var(--muted);margin-bottom:32px;">Auto-submitting your answers...</div>
+</div>
+
+<script src="questions.js"></script>
+<script src="app.js"></script>
+<script>
+  const sess = App.requireAuth('student');
+  const paperData = sessionStorage.getItem('et_active_paper');
+  const startTimeStr = sessionStorage.getItem('et_start_time');
+
+  if (!paperData || !startTimeStr) { window.location.href = 'student.html'; }
+
+  const paper = JSON.parse(paperData);
+  const startTime = parseInt(startTimeStr);
+  const questions = QUESTION_BANK.filter(q => paper.questionIds.includes(q.id));
+  let answers = {};
+  let currentIdx = 0;
+  let timerInterval = null;
+
+  // ── Setup ──
+  document.getElementById('tb-title').textContent = paper.title;
+  document.getElementById('tb-code').textContent = paper.code;
+
+  // ── Timer ──
+  function startTimer() {
+    timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+  }
+
+  function updateTimer() {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const total = paper.timeLimit * 60;
+    const remaining = Math.max(0, total - elapsed);
+    const mins = Math.floor(remaining / 60);
+    const secs = remaining % 60;
+    const el = document.getElementById('timer-display');
+    el.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+    el.classList.toggle('warning', remaining <= 300 && remaining > 60);
+    el.classList.toggle('critical', remaining <= 60);
+    if (remaining === 0) { clearInterval(timerInterval); autoSubmit(); }
+  }
+
+  function autoSubmit() {
+    document.getElementById('expired-overlay').classList.add('show');
+    setTimeout(() => { doSubmit(); }, 2000);
+  }
+
+  // ── Render Question ──
+  function renderQuestion() {
+    const q = questions[currentIdx];
+    document.getElementById('q-num').textContent = String(currentIdx + 1).padStart(2, '0');
+    document.getElementById('q-topic').textContent = q.topic;
+    document.getElementById('q-text').textContent = q.question;
+    document.getElementById('q-counter').textContent = `${currentIdx + 1} / ${questions.length}`;
+    document.getElementById('prev-btn').disabled = currentIdx === 0;
+    document.getElementById('next-btn').textContent = currentIdx === questions.length - 1 ? 'REVIEW' : 'NEXT →';
+
+    const opts = document.getElementById('options-grid');
+    opts.innerHTML = q.options.map((opt, i) => `
+      <button class="option-btn ${answers[q.id] === i ? 'selected' : ''}" onclick="selectAnswer(${i})">
+        <span class="option-letter">${String.fromCharCode(65 + i)}</span>
+        <span>${opt}</span>
+      </button>
+    `).join('');
+
+    updateProgress();
+    renderNav();
+  }
+
+  function selectAnswer(optIdx) {
+    const q = questions[currentIdx];
+    answers[q.id] = optIdx;
+    renderQuestion();
+  }
+
+  function navigate(dir) {
+    currentIdx = Math.max(0, Math.min(questions.length - 1, currentIdx + dir));
+    renderQuestion();
+  }
+
+  function renderNav() {
+    const grid = document.getElementById('q-nav-grid');
+    grid.innerHTML = questions.map((q, i) => `
+      <div class="q-nav-btn ${answers[q.id] !== undefined ? 'answered' : ''} ${i === currentIdx ? 'current' : ''}"
+           onclick="jumpTo(${i})">${i + 1}</div>
+    `).join('');
+    const answered = Object.keys(answers).length;
+    document.getElementById('stat-answered').textContent = answered;
+    document.getElementById('stat-remaining').textContent = questions.length - answered;
+  }
+
+  function jumpTo(idx) { currentIdx = idx; renderQuestion(); }
+
+  function updateProgress() {
+    const pct = ((currentIdx + 1) / questions.length) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+  }
+
+  // ── Submit ──
+  function showSubmit() {
+    const answered = Object.keys(answers).length;
+    const remaining = questions.length - answered;
+    document.getElementById('sub-answered').textContent = answered;
+    document.getElementById('sub-remaining').textContent = remaining;
+    document.getElementById('submit-sub').textContent = remaining > 0
+      ? `You have ${remaining} unanswered question${remaining !== 1 ? 's' : ''}. Unanswered questions will be marked incorrect.`
+      : 'All questions answered. Ready to submit!';
+    document.getElementById('submit-overlay').classList.add('active');
+  }
+
+  function closeSubmit() { document.getElementById('submit-overlay').classList.remove('active'); }
+
+  function submitTest() { clearInterval(timerInterval); doSubmit(); }
+
+  function doSubmit() {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const mins = Math.floor(elapsed / 60);
+    const secs = elapsed % 60;
+    const timeTaken = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+
+    const result = App.saveResult({
+      paperCode: paper.code,
+      studentEmail: sess.email,
+      studentName: sess.name,
+      answers,
+      timeTaken,
+    });
+
+    sessionStorage.removeItem('et_active_paper');
+    sessionStorage.removeItem('et_start_time');
+    window.location.href = `results.html?id=${result.id}`;
+  }
+
+  // ── Init ──
+  renderQuestion();
+  startTimer();
+
+  // Prevent accidental navigation
+  window.addEventListener('beforeunload', e => {
+    e.preventDefault();
+    e.returnValue = 'Your test is in progress. Are you sure you want to leave?';
+  });
+</script>
+</body>
+</html>

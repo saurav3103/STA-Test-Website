@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ElectroTest — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0c10;
+    --surface: #111418;
+    --surface2: #1a1f27;
+    --border: #252b36;
+    --accent: #f5a623;
+    --accent2: #e8380d;
+    --text: #e8eaf0;
+    --muted: #6b7585;
+    --success: #2ecc71;
+    --danger: #e74c3c;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-body: 'IBM Plex Sans', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,166,35,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,166,35,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .admin-container {
+    position: relative;
+    z-index: 10;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: 40px;
+    letter-spacing: 3px;
+    margin: 0;
+  }
+
+  .header-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  table th {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 16px;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  table td {
+    border: 1px solid var(--border);
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  table tbody tr:hover {
+    background: var(--surface2);
+  }
+
+  .role-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+
+  .role-badge.teacher {
+    background: rgba(245, 166, 35, 0.15);
+    color: var(--accent);
+    border: 1px solid rgba(245, 166, 35, 0.3);
+  }
+
+  .role-badge.student {
+    background: rgba(232, 56, 13, 0.15);
+    color: var(--accent2);
+    border: 1px solid rgba(232, 56, 13, 0.3);
+  }
+
+  .btn-delete {
+    padding: 8px 14px;
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-delete:hover {
+    background: #c0392b;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+
+  .empty-state-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    color: var(--accent);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    border-bottom: 1px dashed var(--accent);
+    transition: all 0.2s;
+  }
+
+  .back-link:hover {
+    color: var(--accent2);
+    border-color: var(--accent2);
+  }
+</style>
+</head>
+<body>
+
+<div class="admin-container">
+  <a href="index.html" class="back-link">← Back to Home</a>
+  <div class="page-header">
+    <div>
+      <h1>ADMIN</h1>
+      <p class="header-sub">User Management Panel</p>
+    </div>
+  </div>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="user-table">
+      <!-- User data will be populated here -->
+    </tbody>
+  </table>
+
+  <div id="empty-state" class="empty-state" style="display: none;">
+    <div class="empty-state-icon">📋</div>
+    <p>No users registered yet</p>
+  </div>
+</div>
+
+<script src="questions.js"></script>
+<script src="app.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ElectroTest — Apprentice Electrician Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0c10;
+    --surface: #111418;
+    --surface2: #1a1f27;
+    --border: #252b36;
+    --accent: #f5a623;
+    --accent2: #e8380d;
+    --text: #e8eaf0;
+    --muted: #6b7585;
+    --success: #2ecc71;
+    --danger: #e74c3c;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-body: 'IBM Plex Sans', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+  }
+
+  /* ── Grid BG ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,166,35,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,166,35,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Header ── */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 24px 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-icon {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  .logo-text {
+    font-family: var(--font-display);
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--text);
+  }
+
+  .logo-text span { color: var(--accent); }
+
+  nav {
+    margin-left: auto;
+    display: flex;
+    gap: 8px;
+  }
+
+  .nav-link {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  .nav-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px 80px;
+    text-align: center;
+  }
+
+  .hero-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    background: rgba(245,166,35,0.1);
+    border: 1px solid rgba(245,166,35,0.3);
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(52px, 10vw, 110px);
+    letter-spacing: 6px;
+    line-height: 0.9;
+    margin-bottom: 24px;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+
+  .hero h1 .line2 { color: var(--accent); display: block; }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 64px;
+    animation: fadeDown 0.6s 0.2s ease both;
+  }
+
+  /* ── Role Cards ── */
+  .role-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 680px;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .role-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 40px 32px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .role-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.25s;
+  }
+
+  .role-card:hover { border-color: rgba(245,166,35,0.5); transform: translateY(-4px); background: var(--surface2); }
+  .role-card:hover::before { transform: scaleY(1); }
+
+  .role-card.student-card::before { background: var(--accent2); }
+  .role-card.student-card:hover { border-color: rgba(232,56,13,0.5); }
+
+  .role-icon {
+    font-size: 36px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .role-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+  }
+
+  .role-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .role-arrow {
+    position: absolute;
+    bottom: 24px; right: 24px;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--border);
+    transition: all 0.2s;
+  }
+
+  .role-card:hover .role-arrow { color: var(--accent); transform: translate(4px, -4px); }
+  .student-card:hover .role-arrow { color: var(--accent2); }
+
+  /* ── Stats strip ── */
+  .stats-strip {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 24px;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+
+  .stat { text-align: center; }
+  .stat-val {
+    font-family: var(--font-display);
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(10,12,16,0.92);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s;
+  }
+
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 48px;
+    width: 100%;
+    max-width: 420px;
+    transform: translateY(20px);
+    transition: transform 0.25s;
+    position: relative;
+  }
+
+  .modal-overlay.active .modal { transform: translateY(0); }
+
+  .modal-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+
+  .modal-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    font-family: var(--font-mono);
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .tab-btn.active { background: var(--accent); color: #000; font-weight: 600; }
+
+  .form-group { margin-bottom: 20px; }
+
+  .form-group label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .form-group input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .form-group input:focus { border-color: var(--accent); }
+
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-display);
+    font-size: 18px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: #ffc04a; }
+  .btn-primary.red-btn { background: var(--accent2); color: #fff; }
+  .btn-primary.red-btn:hover { background: #ff5533; }
+
+  .error-msg {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--danger);
+    margin-top: 12px;
+    text-align: center;
+    min-height: 18px;
+  }
+
+  .demo-hint {
+    margin-top: 20px;
+    padding: 12px;
+    background: rgba(245,166,35,0.06);
+    border: 1px solid rgba(245,166,35,0.15);
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .demo-hint strong { color: var(--accent); }
+
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--text); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(16px);  } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-icon"></div>
+  <span class="logo-text">Electro<span>Test</span></span>
+  <nav>
+    <a href="#" class="nav-link" onclick="openModal('teacher')">TEACHER LOGIN</a>
+    <a href="#" class="nav-link" onclick="openModal('student')">STUDENT LOGIN</a>
+    <a href="login.html" class="nav-link">LOGIN</a>
+    <a href="register.html" class="nav-link">REGISTER</a>
+    <a href="admin.html" class="nav-link">ADMIN</a>
+  </nav>
+</header>
+
+<main class="hero">
+  <div class="hero-badge">⚡ APPRENTICE ELECTRICIAN · GRADE 12</div>
+  <h1>MASTER<span class="line2">THE WIRE</span></h1>
+  <p class="hero-sub">A professional test platform for apprentice electricians. Teachers build papers from a curated 50-question bank. Students conquer them with a code.</p>
+
+  <div class="role-grid">
+    <a class="role-card" href="#" onclick="openModal('teacher'); return false;">
+      <span class="role-icon">📋</span>
+      <div class="role-title">TEACHER</div>
+      <p class="role-desc">Create test papers, manage the question bank, and track student performance in real time.</p>
+      <span class="role-arrow">↗</span>
+    </a>
+    <a class="role-card student-card" href="#" onclick="openModal('student'); return false;">
+      <span class="role-icon">⚡</span>
+      <div class="role-title">STUDENT</div>
+      <p class="role-desc">Enter your test code, race the clock, and submit for instant scored feedback.</p>
+      <span class="role-arrow">↗</span>
+    </a>
+  </div>
+</main>
+
+<div class="stats-strip">
+  <div class="stat"><div class="stat-val">50</div><div class="stat-label">QUESTIONS</div></div>
+  <div class="stat"><div class="stat-val">8</div><div class="stat-label">TOPICS</div></div>
+  <div class="stat"><div class="stat-val">∞</div><div class="stat-label">TEST PAPERS</div></div>
+  <div class="stat"><div class="stat-val">60%</div><div class="stat-label">PASS MARK</div></div>
+</div>
+
+<!-- Teacher Modal -->
+<div class="modal-overlay" id="teacher-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('teacher')">✕</button>
+    <div class="modal-title">TEACHER</div>
+    <div class="modal-sub">// instructor access</div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('teacher','login')">LOGIN</button>
+    </div>
+
+    <div class="tab-panel active" id="teacher-login-panel">
+      <div class="form-group">
+        <label>EMAIL</label>
+        <input type="email" id="t-email" placeholder="teacher@demo.com" />
+      </div>
+      <div class="form-group">
+        <label>PASSWORD</label>
+        <input type="password" id="t-pass" placeholder="••••••••" />
+      </div>
+      <button class="btn-primary" onclick="doTeacherLogin()">LOGIN →</button>
+      <div class="error-msg" id="t-error"></div>
+      <div class="demo-hint">Demo: <strong>teacher@demo.com</strong> / <strong>teacher123</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- Student Modal -->
+<div class="modal-overlay" id="student-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('student')">✕</button>
+    <div class="modal-title">STUDENT</div>
+    <div class="modal-sub">// apprentice access</div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('student','login')">LOGIN</button>
+      <button class="tab-btn" onclick="switchTab('student','register')">REGISTER</button>
+    </div>
+
+    <div class="tab-panel active" id="student-login-panel">
+      <div class="form-group">
+        <label>EMAIL</label>
+        <input type="email" id="s-email" placeholder="student@demo.com" />
+      </div>
+      <div class="form-group">
+        <label>PASSWORD</label>
+        <input type="password" id="s-pass" placeholder="••••••••" />
+      </div>
+      <button class="btn-primary red-btn" onclick="doStudentLogin()">LOGIN →</button>
+      <div class="error-msg" id="s-error"></div>
+      <div class="demo-hint">Demo: <strong>student@demo.com</strong> / <strong>student123</strong></div>
+    </div>
+
+    <div class="tab-panel" id="student-register-panel">
+      <div class="form-group">
+        <label>FULL NAME</label>
+        <input type="text" id="r-name" placeholder="Alex Johnson" />
+      </div>
+      <div class="form-group">
+        <label>EMAIL</label>
+        <input type="email" id="r-email" placeholder="you@example.com" />
+      </div>
+      <div class="form-group">
+        <label>PASSWORD</label>
+        <input type="password" id="r-pass" placeholder="Choose password" />
+      </div>
+      <button class="btn-primary red-btn" onclick="doRegister()">CREATE ACCOUNT →</button>
+      <div class="error-msg" id="r-error"></div>
+    </div>
+  </div>
+</div>
+
+<script src="questions.js"></script>
+<script src="app.js"></script>
+<script>
+  App.seedDefaultTeacher();
+
+  // Redirect if already logged in
+  const sess = App.getSession();
+  if (sess) {
+    window.location.href = sess.role === 'teacher' ? 'teacher.html' : 'student.html';
+  }
+
+  function openModal(role) {
+    document.getElementById(role + '-modal').classList.add('active');
+    event && event.preventDefault();
+  }
+  function closeModal(role) {
+    document.getElementById(role + '-modal').classList.remove('active');
+  }
+
+  function switchTab(role, tab) {
+    const prefix = role === 'teacher' ? 't' : (tab === 'register' ? 'r' : 's');
+    document.querySelectorAll(`#${role}-modal .tab-btn`).forEach((b,i) => {
+      b.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='register'));
+    });
+    document.querySelectorAll(`#${role}-modal .tab-panel`).forEach((p,i) => {
+      p.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='register'));
+    });
+  }
+
+  function doTeacherLogin() {
+    const email = document.getElementById('t-email').value.trim();
+    const pass = document.getElementById('t-pass').value;
+    const sess = App.loginTeacher(email, pass);
+    if (!sess) { document.getElementById('t-error').textContent = 'Invalid credentials.'; return; }
+    window.location.href = 'teacher.html';
+  }
+
+  function doStudentLogin() {
+    const email = document.getElementById('s-email').value.trim();
+    const pass = document.getElementById('s-pass').value;
+    const sess = App.loginStudent(email, pass);
+    if (!sess) { document.getElementById('s-error').textContent = 'Invalid credentials.'; return; }
+    window.location.href = 'student.html';
+  }
+
+  function doRegister() {
+    const name = document.getElementById('r-name').value.trim();
+    const email = document.getElementById('r-email').value.trim();
+    const pass = document.getElementById('r-pass').value;
+    if (!name || !email || !pass) { document.getElementById('r-error').textContent = 'All fields required.'; return; }
+    const res = App.registerStudent(email, pass, name);
+    if (res.error) { document.getElementById('r-error').textContent = res.error; return; }
+    App.loginStudent(email, pass);
+    window.location.href = 'student.html';
+  }
+
+  // Enter key support
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      if (document.getElementById('teacher-modal').classList.contains('active')) doTeacherLogin();
+      else if (document.getElementById('student-modal').classList.contains('active')) {
+        const loginActive = document.getElementById('student-login-panel').classList.contains('active');
+        loginActive ? doStudentLogin() : doRegister();
+      }
+    }
+  });
+</script>
+</body>
+</html>
