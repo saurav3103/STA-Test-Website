@@ -200,14 +200,7 @@
               </div>
               <div class="form-group">
                 <label>NUMBER OF QUESTIONS</label>
-                <select id="cp-count">
-                  <option value="10">10 questions</option>
-                  <option value="15">15 questions</option>
-                  <option value="20" selected>20 questions</option>
-                  <option value="25">25 questions</option>
-                  <option value="30">30 questions</option>
-                  <option value="50">All 50 questions</option>
-                </select>
+                <select id="cp-count"></select>
               </div>
               <div class="form-group">
                 <label>TIME LIMIT (MINUTES)</label>
@@ -400,6 +393,27 @@
     updateAvailability();
   }
 
+  function refreshQuestionCountOptions(poolSize) {
+    const select = document.getElementById('cp-count');
+    const previous = parseInt(select.value, 10) || 20;
+    const suggested = [5, 10, 15, 20, 25, 30, 40, 50, 75, 100].filter(v => v < poolSize);
+    const values = [...new Set([...suggested, poolSize].filter(v => Number.isFinite(v) && v > 0))].sort((a, b) => a - b);
+
+    select.innerHTML = values.map(v => {
+      const label = v === poolSize ? `All ${poolSize} questions` : `${v} questions`;
+      return `<option value="${v}">${label}</option>`;
+    }).join('');
+
+    if (!values.length) {
+      select.disabled = true;
+      return;
+    }
+
+    select.disabled = false;
+    const nextValue = values.includes(previous) ? previous : (values.includes(20) ? 20 : values[values.length - 1]);
+    select.value = String(nextValue);
+  }
+
   function toggleTopic(el, topic) {
     el.classList.toggle('selected');
     const i = selectedTopics.indexOf(topic);
@@ -409,6 +423,7 @@
 
   function updateAvailability() {
     const pool = selectedTopics.length ? QUESTION_BANK.filter(q => selectedTopics.includes(q.topic)) : QUESTION_BANK;
+    refreshQuestionCountOptions(pool.length);
     document.getElementById('q-availability').textContent =
       `${pool.length} question${pool.length !== 1 ? 's' : ''} available from ${selectedTopics.length || TOPICS.length} topic${(selectedTopics.length || TOPICS.length) !== 1 ? 's' : ''}.`;
   }
@@ -418,11 +433,12 @@
   // ── Create Paper ──
   function doCreatePaper() {
     const title = document.getElementById('cp-title').value.trim();
-    const count = parseInt(document.getElementById('cp-count').value);
+    const count = parseInt(document.getElementById('cp-count').value, 10);
     const time = parseInt(document.getElementById('cp-time').value);
     const passMark = parseInt(document.getElementById('cp-pass').value);
 
     if (!title) { alert('Please enter a paper title.'); return; }
+    if (!Number.isFinite(count) || count <= 0) { alert('No valid question count available for this selection.'); return; }
 
     const pool = selectedTopics.length ? QUESTION_BANK.filter(q => selectedTopics.includes(q.topic)) : QUESTION_BANK;
     if (pool.length < count) { alert(`Only ${pool.length} questions available for selected topics. Reduce question count.`); return; }

@@ -35,6 +35,41 @@ const App = (() => {
     return /^(which|what|where|when|why|how|name|identify|the\s|this\s|to\s)/i.test(t);
   }
 
+  function mergeUploadedQuestionBanks() {
+    if (typeof QUESTION_BANK === 'undefined' || !Array.isArray(QUESTION_BANK)) return;
+    if (QUESTION_BANK.some(q => q && q.source === 'asian_book')) return;
+    if (typeof ASIAN_BOOK_QUESTIONS === 'undefined' || !Array.isArray(ASIAN_BOOK_QUESTIONS) || !ASIAN_BOOK_QUESTIONS.length) return;
+
+    const existingIds = new Set(QUESTION_BANK.map(q => q && q.id).filter(id => Number.isFinite(Number(id))).map(Number));
+    let nextId = existingIds.size ? Math.max(...existingIds) : 0;
+
+    const normalized = ASIAN_BOOK_QUESTIONS
+      .filter(q => q && typeof q.question === 'string' && Array.isArray(q.options) && q.options.length === 4)
+      .map(q => {
+        const cloned = {
+          ...q,
+          options: [...q.options],
+          source: 'asian_book',
+          originalId: q.id,
+        };
+
+        let id = Number(cloned.id);
+        if (!Number.isFinite(id) || existingIds.has(id)) {
+          id = ++nextId;
+        } else {
+          nextId = Math.max(nextId, id);
+        }
+
+        existingIds.add(id);
+        cloned.id = id;
+        return cloned;
+      });
+
+    if (!normalized.length) return;
+    QUESTION_BANK.push(...normalized);
+    console.log('Integrated uploaded questions:', normalized.length, 'Total:', QUESTION_BANK.length);
+  }
+
   function sanitizeQuestionBank() {
     if (typeof QUESTION_BANK === 'undefined' || !Array.isArray(QUESTION_BANK)) return;
 
@@ -60,6 +95,7 @@ const App = (() => {
     }
   }
 
+  mergeUploadedQuestionBanks();
   sanitizeQuestionBank();
 
   // ── Auth ─────────────────────────────────────────────────────────────────
@@ -224,6 +260,8 @@ const App = (() => {
 
   // ── Question Management (Asian Book Integration) ─────────────────────────
   function getAsianBookQuestions() {
+    const merged = QUESTION_BANK.filter(q => q && q.source === 'asian_book');
+    if (merged.length) return merged;
     return (typeof ASIAN_BOOK_QUESTIONS !== 'undefined') ? ASIAN_BOOK_QUESTIONS : [];
   }
 

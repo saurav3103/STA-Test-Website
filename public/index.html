@@ -424,7 +424,7 @@
 
 <div class="stats-strip">
   <div class="stat"><div class="stat-val" id="stat-questions">4,364</div><div class="stat-label">QUESTIONS</div></div>
-  <div class="stat"><div class="stat-val">26</div><div class="stat-label">TOPICS</div></div>
+  <div class="stat"><div class="stat-val" id="stat-topics">26</div><div class="stat-label">TOPICS</div></div>
   <div class="stat"><div class="stat-val">∞</div><div class="stat-label">TEST PAPERS</div></div>
   <div class="stat"><div class="stat-val">60%</div><div class="stat-label">PASS MARK</div></div>
 </div>
@@ -433,14 +433,12 @@
 <script src="../src/data/asian_book_questions.js"></script>
 <script src="../src/js/core/app.js"></script>
 <script>
-  // Merge Asian Book questions with existing question bank
-  if (typeof ASIAN_BOOK_QUESTIONS !== 'undefined' && Array.isArray(ASIAN_BOOK_QUESTIONS)) {
-    QUESTION_BANK.push(...ASIAN_BOOK_QUESTIONS);
-    console.log('✓ Asian Book questions integrated:', ASIAN_BOOK_QUESTIONS.length, 'questions added');
-    console.log('✓ Total questions available:', QUESTION_BANK.length);
-  }
-
   App.seedDefaultTeacher();
+
+  if (Array.isArray(QUESTION_BANK)) {
+    document.getElementById('stat-questions').textContent = QUESTION_BANK.length;
+    document.getElementById('stat-topics').textContent = new Set(QUESTION_BANK.map(q => q.topic)).size;
+  }
 
   /*
   // Redirect if already logged in
