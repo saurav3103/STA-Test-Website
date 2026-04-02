@@ -9,12 +9,12 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg:#0a0c10; --surface:#111418; --border:#252b36;
-    --accent:#f5a623; --text:#e8eaf0; --muted:#6b7585; --success:#2ecc71;
-    --font-display:'Bebas Neue',sans-serif; --font-mono:'IBM Plex Mono',monospace; --font-body:'IBM Plex Sans',sans-serif;
+    --bg:#f5f7fb; --surface:#ffffff; --border:#d8e0ea;
+    --accent:#2563eb; --text:#142033; --muted:#667085; --success:#2ecc71;
+    --font-display:'IBM Plex Sans',sans-serif; --font-mono:'IBM Plex Mono',monospace; --font-body:'IBM Plex Sans',sans-serif;
   }
   body { background:var(--bg); color:var(--text); font-family:var(--font-body); margin:0; padding:0; min-height:100vh; }
-  body::before { content:''; position:fixed; inset:0; background-image: linear-gradient(rgba(245,166,35,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(245,166,35,0.04) 1px, transparent 1px); background-size:40px 40px; pointer-events:none; }
+  body::before { content:''; position:fixed; inset:0; background: radial-gradient(circle at top left, rgba(37,99,235,0.08), transparent 32%), radial-gradient(circle at bottom right, rgba(15,118,110,0.05), transparent 30%); pointer-events:none; }
   
   .split { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; min-height:100vh; gap:0; }
   
@@ -36,8 +36,8 @@
   textarea { width:100%; flex:1; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:14px; font-family:var(--font-body); font-size:14px; line-height:1.6; resize:none; outline:none; }
   textarea:focus { border-color:var(--accent); }
   
-  .save-btn { background:var(--accent); color:#000; border:none; padding:14px 24px; border-radius:6px; font-family:var(--font-display); font-size:18px; letter-spacing:2px; cursor:pointer; }
-  .save-btn:hover { background:#ffc04a; }
+  .save-btn { background:var(--accent); color:#fff; border:none; padding:14px 24px; border-radius:6px; font-family:var(--font-display); font-size:18px; letter-spacing:2px; cursor:pointer; }
+  .save-btn:hover { background:#1d4ed8; }
   
   .status { font-family:var(--font-mono); font-size:12px; min-height:20px; color:var(--muted); }
   .status.ok { color:var(--success); }

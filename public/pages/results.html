@@ -9,18 +9,18 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #0a0c10; --surface: #111418; --surface2: #1a1f27;
-    --border: #252b36; --accent: #e8380d; --accent2: #f5a623;
-    --text: #e8eaf0; --muted: #6b7585; --success: #2ecc71; --danger: #e74c3c;
-    --font-display: 'Bebas Neue', sans-serif;
+    --bg: #f5f7fb; --surface: #ffffff; --surface2: #f1f5f9;
+    --border: #d8e0ea; --accent: #2563eb; --accent2: #0f766e;
+    --text: #142033; --muted: #667085; --success: #2ecc71; --danger: #e74c3c;
+    --font-display: 'IBM Plex Sans', sans-serif;
     --font-mono: 'IBM Plex Mono', monospace;
     --font-body: 'IBM Plex Sans', sans-serif;
   }
   body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; }
   body::before {
     content: ''; position: fixed; inset: 0;
-    background-image: linear-gradient(rgba(245,166,35,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(245,166,35,0.03) 1px, transparent 1px);
-    background-size: 40px 40px; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle at top left, rgba(37,99,235,0.08), transparent 32%), radial-gradient(circle at bottom right, rgba(15,118,110,0.05), transparent 30%);
+    pointer-events: none; z-index: 0;
   }
 
   header { position: relative; z-index: 10; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 32px; display: flex; align-items: center; height: 60px; gap: 16px; }
@@ -31,7 +31,7 @@
   .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--muted); }
   .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); }
   .btn-accent { background: var(--accent2); color: #000; font-weight: 600; }
-  .btn-accent:hover { background: #ffc04a; }
+  .btn-accent:hover { background: #1d4ed8; }
 
   main { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 48px 24px; }
 
@@ -47,8 +47,8 @@
     margin: 0 auto 24px;
     position: relative;
   }
-  .score-circle.pass { border: 4px solid var(--success); box-shadow: 0 0 60px rgba(46,204,113,0.2); }
-  .score-circle.fail { border: 4px solid var(--danger); box-shadow: 0 0 60px rgba(231,76,60,0.15); }
+  .score-circle.pass { border: 4px solid var(--success); box-shadow: 0 0 40px rgba(46,204,113,0.15); }
+  .score-circle.fail { border: 4px solid var(--danger); box-shadow: 0 0 40px rgba(231,76,60,0.12); }
   .score-pct { font-family: var(--font-display); font-size: 72px; letter-spacing: 2px; line-height: 1; }
   .score-circle.pass .score-pct { color: var(--success); }
   .score-circle.fail .score-pct { color: var(--danger); }
@@ -80,7 +80,7 @@
   .q-result-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
   .q-item-num { font-family: var(--font-mono); font-size: 11px; color: var(--muted); flex-shrink: 0; min-width: 28px; }
   .q-item-text { font-size: 14px; font-weight: 600; flex: 1; }
-  .q-topic-badge { font-family: var(--font-mono); font-size: 10px; background: rgba(245,166,35,0.1); color: var(--accent2); border: 1px solid rgba(245,166,35,0.2); padding: 2px 8px; border-radius: 2px; flex-shrink: 0; }
+  .q-topic-badge { font-family: var(--font-mono); font-size: 10px; background: rgba(37,99,235,0.08); color: var(--accent); border: 1px solid rgba(37,99,235,0.18); padding: 2px 8px; border-radius: 2px; flex-shrink: 0; }
   .q-opts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   .q-opt { font-family: var(--font-mono); font-size: 12px; padding: 8px 12px; border-radius: 4px; background: var(--bg); color: var(--muted); }
   .q-opt.correct-ans { background: rgba(46,204,113,0.1); color: var(--success); border: 1px solid rgba(46,204,113,0.3); }
@@ -90,7 +90,7 @@
   /* Filter toggles */
   .filter-bar { display: flex; gap: 10px; margin-bottom: 20px; }
   .filter-btn { font-family: var(--font-mono); font-size: 11px; padding: 6px 14px; border-radius: 4px; border: 1px solid var(--border); color: var(--muted); background: none; cursor: pointer; transition: all 0.2s; }
-  .filter-btn.active { border-color: var(--accent2); color: var(--accent2); background: rgba(245,166,35,0.08); }
+  .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(37,99,235,0.08); }
 
   @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
 </style>
