@@ -105,6 +105,17 @@
   .q-num { font-family: var(--font-mono); font-size: 11px; color: var(--muted); min-width: 30px; }
   .q-topic { font-family: var(--font-mono); font-size: 10px; background: rgba(245,166,35,0.1); color: var(--accent); border: 1px solid rgba(245,166,35,0.2); padding: 2px 8px; border-radius: 2px; }
   .q-text { font-size: 14px; color: var(--text); margin-bottom: 10px; }
+  .q-image-wrap { margin: 4px 0 10px; }
+  .q-image {
+    width: 100%;
+    max-width: 420px;
+    max-height: 220px;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    padding: 6px;
+  }
   .q-options { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
   .q-opt { font-family: var(--font-mono); font-size: 12px; color: var(--muted); padding: 4px 8px; border-radius: 3px; background: var(--bg); }
   .q-opt.correct { color: var(--success); background: rgba(46,204,113,0.1); }
@@ -152,6 +163,8 @@
 
     <div class="sidebar-section">CONTENT</div>
     <div class="nav-item" onclick="showPage('questions')"><span class="nav-icon">❓</span>Question Bank</div>
+    <a class="nav-item" href="image_mapping_review.html" style="text-decoration:none;"><span class="nav-icon">🖼️</span>Image Mapping</a>
+    <a class="nav-item" href="quick_map.html" style="text-decoration:none;"><span class="nav-icon">⚡</span>Quick Map</a>
     <div class="nav-item" onclick="showPage('students')"><span class="nav-icon">👥</span>Students</div>
 
     <div class="sidebar-section">REPORTS</div>
@@ -218,6 +231,9 @@
             <div class="card-title">TOPIC FILTER <span style="color:var(--muted);font-size:10px;"> (all = fully random)</span></div>
             <div style="margin-top:12px;">
               <div class="topic-chips" id="topic-chips"></div>
+              <div class="topic-chips" style="margin-top:10px;">
+                <div class="topic-chip" id="image-only-chip" onclick="toggleImageOnly(this)">ONLY QUESTIONS WITH IMAGES</div>
+              </div>
             </div>
             <div class="info-box" style="margin-top:16px;" id="q-availability"></div>
           </div>
@@ -384,6 +400,11 @@
   // ── Topic chips setup ──
   const TOPICS = [...new Set(QUESTION_BANK.map(q => q.topic))];
   let selectedTopics = [];
+  let imageOnlyMode = false;
+
+  function getPaperQuestionCount(p) {
+    return Number(p?.questionCount) || (Array.isArray(p?.questionIds) ? p.questionIds.length : 0);
+  }
 
   function setupTopics() {
     const el = document.getElementById('topic-chips');
@@ -421,11 +442,23 @@
     updateAvailability();
   }
 
+  function toggleImageOnly(el) {
+    imageOnlyMode = !imageOnlyMode;
+    el.classList.toggle('selected', imageOnlyMode);
+    updateAvailability();
+  }
+
+  function getCreatePool() {
+    let pool = selectedTopics.length ? QUESTION_BANK.filter(q => selectedTopics.includes(q.topic)) : QUESTION_BANK;
+    if (imageOnlyMode) pool = pool.filter(hasQuestionImage);
+    return pool;
+  }
+
   function updateAvailability() {
-    const pool = selectedTopics.length ? QUESTION_BANK.filter(q => selectedTopics.includes(q.topic)) : QUESTION_BANK;
+    const pool = getCreatePool();
     refreshQuestionCountOptions(pool.length);
     document.getElementById('q-availability').textContent =
-      `${pool.length} question${pool.length !== 1 ? 's' : ''} available from ${selectedTopics.length || TOPICS.length} topic${(selectedTopics.length || TOPICS.length) !== 1 ? 's' : ''}.`;
+      `${pool.length} question${pool.length !== 1 ? 's' : ''} available from ${selectedTopics.length || TOPICS.length} topic${(selectedTopics.length || TOPICS.length) !== 1 ? 's' : ''}${imageOnlyMode ? ' (image questions only)' : ''}.`;
   }
 
   setupTopics();
@@ -440,11 +473,21 @@
     if (!title) { alert('Please enter a paper title.'); return; }
     if (!Number.isFinite(count) || count <= 0) { alert('No valid question count available for this selection.'); return; }
 
-    const pool = selectedTopics.length ? QUESTION_BANK.filter(q => selectedTopics.includes(q.topic)) : QUESTION_BANK;
+    const pool = getCreatePool();
     if (pool.length < count) { alert(`Only ${pool.length} questions available for selected topics. Reduce question count.`); return; }
 
-    const questionIds = App.shuffle(pool).slice(0, count).map(q => q.id);
-    const paper = App.createPaper({ title, teacherEmail: sess.email, questionIds, timeLimit: time, passMark });
+    const questionPoolIds = pool.map(q => q.id);
+    const questionIds = App.shuffle(questionPoolIds).slice(0, count);
+    const paper = App.createPaper({
+      title,
+      teacherEmail: sess.email,
+      questionIds,
+      questionPoolIds,
+      questionCount: count,
+      randomPerStudent: true,
+      timeLimit: time,
+      passMark,
+    });
 
     document.getElementById('created-code').textContent = paper.code;
     document.getElementById('created-info').textContent = `${count} questions · ${time} min · Pass: ${passMark}%`;
@@ -452,7 +495,9 @@
 
     document.getElementById('cp-title').value = '';
     selectedTopics = [];
+    imageOnlyMode = false;
     document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('selected'));
+    document.getElementById('image-only-chip')?.classList.remove('selected');
     updateAvailability();
   }
 
@@ -483,7 +528,7 @@
         <span style="font-family:var(--font-display);font-size:20px;letter-spacing:3px;color:var(--accent);min-width:90px;">${p.code}</span>
         <div style="flex:1;">
           <div style="font-size:13px;">${p.title}</div>
-          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${p.questionIds.length}q · ${p.timeLimit}min</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${getPaperQuestionCount(p)}q · ${p.timeLimit}min</div>
         </div>
       </div>
     `).join('') || '<div style="color:var(--muted);font-size:13px;padding:10px 0;">No papers yet.</div>';
@@ -515,7 +560,7 @@
           <div class="paper-info">
             <div class="paper-title">${p.title}</div>
             <div class="paper-meta">
-              <span class="meta-item">📝 ${p.questionIds.length} questions</span>
+              <span class="meta-item">📝 ${getPaperQuestionCount(p)} questions</span>
               <span class="meta-item">⏱ ${p.timeLimit} min</span>
               <span class="meta-item">✅ Pass: ${p.passMark}%</span>
               <span class="meta-item">👥 ${results.length} submissions</span>
@@ -548,18 +593,58 @@
 
   // ── Questions ──
   let activeFilter = '';
+  const IMAGE_ONLY_FILTER = '__with_images__';
+  function normalizeQuestionText(text) {
+    return String(text || '')
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .replace(/\s+([,.;:?])/g, '$1')
+      .trim();
+  }
+
+  function resolveQuestionImage(q) {
+    if (!q) return '';
+    if (q.image) return q.image;
+    if (q.imageUrl) return q.imageUrl;
+
+    const asianBank = (typeof ASIAN_BOOK_QUESTIONS !== 'undefined' && Array.isArray(ASIAN_BOOK_QUESTIONS))
+      ? ASIAN_BOOK_QUESTIONS
+      : (Array.isArray(window.ASIAN_BOOK_QUESTIONS) ? window.ASIAN_BOOK_QUESTIONS : []);
+
+    if (q.source === 'asian_book' && asianBank.length) {
+      const byOriginalId = asianBank.find(aq => Number(aq.id) === Number(q.originalId));
+      if (byOriginalId && (byOriginalId.image || byOriginalId.imageUrl)) return byOriginalId.image || byOriginalId.imageUrl;
+
+      const qNorm = normalizeQuestionText(q.question);
+      const byText = asianBank.find(aq => normalizeQuestionText(aq.question) === qNorm);
+      if (byText && (byText.image || byText.imageUrl)) return byText.image || byText.imageUrl;
+    }
+
+    return '';
+  }
+
+  function hasQuestionImage(q) {
+    return Boolean(resolveQuestionImage(q));
+  }
+
   function renderQuestions() {
     const filters = document.getElementById('q-filters');
     const allTopics = [...new Set(QUESTION_BANK.map(q => q.topic))];
+    const imageQuestionCount = QUESTION_BANK.filter(hasQuestionImage).length;
     filters.innerHTML = [
       `<button class="filter-chip ${activeFilter===''?'active':''}" onclick="setFilter('')">ALL (${QUESTION_BANK.length})</button>`,
+      `<button class="filter-chip ${activeFilter===IMAGE_ONLY_FILTER?'active':''}" onclick="setFilter(IMAGE_ONLY_FILTER)">QUESTIONS WITH IMAGES (${imageQuestionCount})</button>`,
       ...allTopics.map(t => {
         const cnt = QUESTION_BANK.filter(q => q.topic === t).length;
         return `<button class="filter-chip ${activeFilter===t?'active':''}" onclick="setFilter('${t}')">${t} (${cnt})</button>`;
       })
     ].join('');
 
-    const filtered = activeFilter ? QUESTION_BANK.filter(q => q.topic === activeFilter) : QUESTION_BANK;
+    const filtered = activeFilter === ''
+      ? QUESTION_BANK
+      : activeFilter === IMAGE_ONLY_FILTER
+        ? QUESTION_BANK.filter(hasQuestionImage)
+        : QUESTION_BANK.filter(q => q.topic === activeFilter);
     document.getElementById('q-list').innerHTML = filtered.map(q => `
       <div class="question-item">
         <div class="q-header">
@@ -567,6 +652,7 @@
           <span class="q-topic">${q.topic}</span>
         </div>
         <div class="q-text">${q.question}</div>
+        ${resolveQuestionImage(q) ? `<div class="q-image-wrap"><img class="q-image" src="${resolveQuestionImage(q)}" alt="Question diagram" loading="lazy" /></div>` : ''}
         <div class="q-options">
           ${q.options.map((opt, i) => `<div class="q-opt ${i === q.answer ? 'correct' : ''}">
             ${String.fromCharCode(65+i)}. ${opt}${i === q.answer ? ' ✓' : ''}

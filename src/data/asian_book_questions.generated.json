@@ -1,6 +1,4 @@
-// Auto-generated from src/data/extracted_content.txt
-// Generated on 2026-04-01T10:15:36.418Z
-const ASIAN_BOOK_QUESTIONS = [
+[
   {
     "id": 1,
     "topic": "Basic Electricity",
@@ -18630,6 +18628,4 @@ const ASIAN_BOOK_QUESTIONS = [
     "image": "",
     "answer": null
   }
-];
-
-if (typeof module !== 'undefined' && module.exports) module.exports = ASIAN_BOOK_QUESTIONS;
+]

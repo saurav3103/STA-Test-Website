@@ -238,20 +238,27 @@
     if (!paper.active) { errEl.textContent = 'This test is currently closed by the teacher.'; return; }
     errEl.textContent = '';
     loadedPaper = paper;
+    const questionCount = Number(paper.questionCount) || (Array.isArray(paper.questionIds) ? paper.questionIds.length : 0);
 
     document.getElementById('prev-code').textContent = paper.code;
     document.getElementById('prev-title').textContent = paper.title;
-    document.getElementById('prev-qcount').textContent = paper.questionIds.length;
+    document.getElementById('prev-qcount').textContent = questionCount;
     document.getElementById('prev-time').textContent = paper.timeLimit;
     document.getElementById('prev-pass').textContent = paper.passMark + '%';
-    document.getElementById('prev-marks').textContent = paper.questionIds.length;
+    document.getElementById('prev-marks').textContent = questionCount;
     document.getElementById('code-entry').style.display = 'none';
     document.getElementById('paper-preview').classList.add('show');
   }
 
   function startTest() {
     if (!loadedPaper) return;
-    sessionStorage.setItem('et_active_paper', JSON.stringify(loadedPaper));
+    const assignedQuestionIds = App.pickStudentQuestionIds(loadedPaper, sess.email);
+    if (!assignedQuestionIds.length) {
+      document.getElementById('code-error').textContent = 'This test has no available questions.';
+      return;
+    }
+    const activePaper = { ...loadedPaper, assignedQuestionIds };
+    sessionStorage.setItem('et_active_paper', JSON.stringify(activePaper));
     sessionStorage.setItem('et_start_time', Date.now().toString());
     window.location.href = 'test.html';
   }

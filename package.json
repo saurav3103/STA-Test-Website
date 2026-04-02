@@ -5,7 +5,8 @@
   "description": "ElectroTest with Express + SQLite auth and question bank database",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "extract:questions": "node tmp/extract_questions_from_html.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

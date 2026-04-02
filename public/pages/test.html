@@ -224,12 +224,51 @@
 
   const paper = JSON.parse(paperData);
   const startTime = parseInt(startTimeStr);
-  const questions = QUESTION_BANK.filter(q => paper.questionIds.includes(q.id));
+  const activeQuestionIds = Array.isArray(paper.assignedQuestionIds) && paper.assignedQuestionIds.length
+    ? paper.assignedQuestionIds
+    : paper.questionIds;
+  const questionById = new Map(QUESTION_BANK.map(q => [q.id, q]));
+  const questions = (activeQuestionIds || []).map(id => questionById.get(id)).filter(Boolean);
+  if (!questions.length) { window.location.href = 'student.html'; }
   let answers = {};
   let currentIdx = 0;
   let timerInterval = null;
 
   const QUESTION_IMAGE_MAP = window.QUESTION_IMAGE_MAP || {};
+  const ASIAN_BANK = (typeof ASIAN_BOOK_QUESTIONS !== 'undefined' && Array.isArray(ASIAN_BOOK_QUESTIONS))
+    ? ASIAN_BOOK_QUESTIONS
+    : (Array.isArray(window.ASIAN_BOOK_QUESTIONS) ? window.ASIAN_BOOK_QUESTIONS : []);
+  const ASIAN_IMAGE_BY_ID = new Map(
+    ASIAN_BANK
+      .map(q => [Number(q.id), q.image || q.imageUrl || ''])
+  );
+
+  function normalizeQuestionText(text) {
+    return String(text || '')
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .replace(/\s+([,.;:?])/g, '$1')
+      .trim();
+  }
+
+  function resolveQuestionImage(q) {
+    if (!q) return '';
+    if (q.image) return q.image;
+    if (q.imageUrl) return q.imageUrl;
+    if (QUESTION_IMAGE_MAP[q.id]) return QUESTION_IMAGE_MAP[q.id];
+
+    // Fallback for merged Asian-book rows where ids changed.
+    if (q.source === 'asian_book') {
+      const byOriginalId = ASIAN_IMAGE_BY_ID.get(Number(q.originalId));
+      if (byOriginalId) return byOriginalId;
+
+      const qNorm = normalizeQuestionText(q.question);
+      const matched = ASIAN_BANK.find(aq => normalizeQuestionText(aq.question) === qNorm);
+      if (matched && (matched.image || matched.imageUrl)) return matched.image || matched.imageUrl;
+    }
+
+    return '';
+  }
 
   // ── Setup ──
   document.getElementById('tb-title').textContent = paper.title;
@@ -272,7 +311,7 @@
     const imageWrap = document.getElementById('q-image-wrap');
     const imageEl = document.getElementById('q-image');
     const imageMissingEl = document.getElementById('q-image-missing');
-    const imageSrc = q.image || q.imageUrl || QUESTION_IMAGE_MAP[q.id] || '';
+    const imageSrc = resolveQuestionImage(q);
     const mentionsFigure = /figure|diagram|shown below|given below|circuit below/i.test(String(q.question || ''));
 
     if (imageSrc) {
@@ -359,6 +398,7 @@
       paperCode: paper.code,
       studentEmail: sess.email,
       studentName: sess.name,
+      questionIds: questions.map(q => q.id),
       answers,
       timeTaken,
     });

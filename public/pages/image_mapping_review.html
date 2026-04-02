@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ElectroTest — Image Mapping Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#0a0c10; --surface:#111418; --surface2:#1a1f27; --border:#252b36;
+    --accent:#f5a623; --accent2:#e8380d; --text:#e8eaf0; --muted:#6b7585;
+    --font-display:'Bebas Neue',sans-serif; --font-mono:'IBM Plex Mono',monospace; --font-body:'IBM Plex Sans',sans-serif;
+  }
+  body { background:var(--bg); color:var(--text); font-family:var(--font-body); min-height:100vh; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 28px; }
+  .head { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:18px; }
+  .title { font-family:var(--font-display); font-size:40px; letter-spacing:3px; }
+  .sub { font-family:var(--font-mono); color:var(--muted); font-size:11px; }
+  .controls { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:14px; display:grid; gap:10px; }
+  .assign-panel { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:14px; display:grid; gap:10px; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .btn { border:1px solid var(--border); background:transparent; color:var(--muted); padding:9px 12px; border-radius:6px; cursor:pointer; font-family:var(--font-mono); font-size:12px; }
+  .btn:hover { border-color:var(--accent); color:var(--accent); }
+  .btn.primary { background:var(--accent); color:#000; border-color:var(--accent); }
+  .btn.primary:hover { background:#ffc04a; }
+  .input, select, textarea { background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:9px 10px; font-family:var(--font-mono); font-size:12px; }
+  textarea { width:100%; min-height:120px; }
+  .list { display:grid; gap:12px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:14px; display:grid; gap:10px; }
+  .meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; font-family:var(--font-mono); font-size:11px; color:var(--muted); }
+  .tag { border:1px solid var(--border); border-radius:999px; padding:2px 8px; }
+  .q { font-size:15px; font-weight:600; }
+  .grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  .preview { border:1px solid var(--border); border-radius:6px; background:var(--bg); padding:8px; min-height:180px; display:flex; align-items:center; justify-content:center; }
+  .preview img { max-width:100%; max-height:220px; object-fit:contain; }
+  .small { font-family:var(--font-mono); color:var(--muted); font-size:11px; }
+  .ok { color:#2ecc71; }
+  .warn { color:#f5a623; }
+  .assign-preview { max-width:280px; max-height:180px; border:1px solid var(--border); border-radius:6px; background:var(--bg); padding:6px; object-fit:contain; }
+  @media (max-width: 900px) { .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div>
+      <div class="title">IMAGE MAPPING REVIEW</div>
+      <div class="sub">Manual correction for question-image mismatches</div>
+    </div>
+    <a class="btn" href="teacher.html">Back To Teacher</a>
+  </div>
+
+  <div class="controls">
+    <div class="row">
+      <button class="btn" id="btn-figure">Filter: Figure/Diagram Questions</button>
+      <button class="btn" id="btn-all">Show All</button>
+      <button class="btn" id="btn-unmapped">Only Unmapped</button>
+      <input class="input" id="search" placeholder="Search question text..." style="min-width:280px;" />
+    </div>
+    <div class="row">
+      <button class="btn primary" id="btn-export">Export Overrides JSON</button>
+      <button class="btn" id="btn-copy">Copy JSON</button>
+      <span class="small" id="stats"></span>
+    </div>
+    <textarea id="jsonOut" placeholder="Exported overrides JSON appears here"></textarea>
+  </div>
+
+  <div class="assign-panel">
+    <div class="row">
+      <div class="small">IMAGE-FIRST ASSIGN</div>
+    </div>
+    <div class="row">
+      <label class="small" for="imgNo">Image No</label>
+      <select id="imgNo" class="input"></select>
+      <button class="btn" id="btn-prev-img">Prev</button>
+      <button class="btn" id="btn-next-img">Next</button>
+      <span class="small" id="imgPathLabel"></span>
+    </div>
+    <div class="row">
+      <img id="assignPreview" class="assign-preview" alt="Selected image preview" />
+      <div style="flex:1; min-width:280px; display:grid; gap:8px;">
+        <div class="row">
+          <input class="input" id="assignQuestionId" placeholder="Question ID (e.g. 37)" style="min-width:180px;" />
+          <button class="btn primary" id="btn-assign-id">Assign By ID</button>
+        </div>
+        <textarea id="assignQuestionText" placeholder="Paste or type question text to assign selected image"></textarea>
+        <div class="row">
+          <button class="btn primary" id="btn-assign-text">Assign By Question Text</button>
+          <span class="small" id="assignStatus"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <div style="margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--border);">
+    <div class="title" style="font-size: 28px; margin-bottom: 14px;">CONFIRMED MAPPINGS</div>
+    <div class="list" id="confirmed-list"></div>
+  </div>
+</div>
+
+<script src="../../src/data/asian_book_questions.js"></script>
+<script>
+  const ASIAN_SOURCE = (typeof ASIAN_BOOK_QUESTIONS !== 'undefined' && Array.isArray(ASIAN_BOOK_QUESTIONS))
+    ? ASIAN_BOOK_QUESTIONS
+    : (Array.isArray(window.ASIAN_BOOK_QUESTIONS) ? window.ASIAN_BOOK_QUESTIONS : []);
+  const QUESTIONS = ASIAN_SOURCE;
+  const STORAGE_KEY = 'et_manual_image_overrides';
+  const FIG_RE = /figure|diagram|shown below|given below|circuit below|in-figure|in figure/i;
+  const MAX_IMAGE_NO = 108;
+
+  let mode = 'figure';
+  let search = '';
+  let overrides = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{"questionIdToImage":{},"questionTextToImage":{}}');
+
+  function normalizeQuestionText(text) {
+    return String(text || '').toLowerCase().replace(/\s+/g, ' ').replace(/\s+([,.;:?])/g, '$1').trim();
+  }
+
+  function getSelectedImagePath() {
+    const n = Number(document.getElementById('imgNo').value || 1);
+    return `../assets/asian-book/image${n}.png`;
+  }
+
+  function updateSelectedImagePreview() {
+    const path = getSelectedImagePath();
+    const img = document.getElementById('assignPreview');
+    img.src = path;
+    document.getElementById('imgPathLabel').textContent = path;
+  }
+
+  function setStatus(msg, cls) {
+    const s = document.getElementById('assignStatus');
+    s.className = `small ${cls || ''}`;
+    s.textContent = msg || '';
+  }
+
+  function getOverrideByQuestion(q) {
+    const byId = overrides.questionIdToImage && overrides.questionIdToImage[String(q.id)];
+    if (byId) return byId;
+    const byText = overrides.questionTextToImage && overrides.questionTextToImage[normalizeQuestionText(q.question)];
+    return byText || '';
+  }
+
+  function getImage(q) {
+    return getOverrideByQuestion(q) || q.image || q.imageUrl || '';
+  }
+
+  function isQuestionOverridden(q) {
+    return !!getOverrideByQuestion(q);
+  }
+
+  function getFiltered() {
+    let arr = QUESTIONS.slice();
+    // Always exclude questions that are already overridden
+    arr = arr.filter(q => !isQuestionOverridden(q));
+    if (mode === 'figure') arr = arr.filter(q => FIG_RE.test(String(q.question || '')));
+    if (mode === 'unmapped') arr = arr.filter(q => !getImage(q));
+    if (search.trim()) {
+      const s = search.toLowerCase();
+      arr = arr.filter(q => String(q.question || '').toLowerCase().includes(s));
+    }
+    return arr;
+  }
+
+  function getConfirmed() {
+    return QUESTIONS.filter(q => isQuestionOverridden(q));
+  }
+
+  function setOverride(q, val) {
+    const v = String(val || '').trim();
+    if (!overrides.questionIdToImage) overrides.questionIdToImage = {};
+    if (!v) {
+      delete overrides.questionIdToImage[String(q.id)];
+    } else {
+      overrides.questionIdToImage[String(q.id)] = v;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides));
+    render();
+  }
+
+  function assignByQuestionId() {
+    const idRaw = document.getElementById('assignQuestionId').value.trim();
+    const id = Number(idRaw);
+    if (!Number.isFinite(id)) {
+      setStatus('Invalid question ID', 'warn');
+      return;
+    }
+    const q = QUESTIONS.find(x => Number(x.id) === id);
+    if (!q) {
+      setStatus(`Question #${id} not found`, 'warn');
+      return;
+    }
+    setOverride(q, getSelectedImagePath());
+    setStatus(`Assigned ${getSelectedImagePath()} to question #${id}`, 'ok');
+  }
+
+  function assignByQuestionText() {
+    const t = document.getElementById('assignQuestionText').value.trim();
+    if (!t) {
+      setStatus('Please type/paste question text', 'warn');
+      return;
+    }
+    const n = normalizeQuestionText(t);
+    let q = QUESTIONS.find(x => normalizeQuestionText(x.question) === n);
+    if (!q) {
+      q = QUESTIONS.find(x => normalizeQuestionText(x.question).includes(n) || n.includes(normalizeQuestionText(x.question)));
+    }
+    if (!q) {
+      setStatus('No question matched that text', 'warn');
+      return;
+    }
+    setOverride(q, getSelectedImagePath());
+    setStatus(`Assigned ${getSelectedImagePath()} to question #${q.id}`, 'ok');
+  }
+
+  function render() {
+    const list = document.getElementById('list');
+    const rows = getFiltered();
+    document.getElementById('stats').textContent = `Visible: ${rows.length} | Total: ${QUESTIONS.length} | Confirmed: ${getConfirmed().length}`;
+
+    list.innerHTML = rows.map(q => {
+      const img = getImage(q);
+      return `
+      <div class="card">
+        <div class="meta">
+          <span class="tag">#${q.id}</span>
+          <span class="tag">${q.topic || 'Uncategorized'}</span>
+          <span class="tag">${img ? 'Mapped' : 'Unmapped'}</span>
+        </div>
+        <div class="q">${q.question || ''}</div>
+        <div class="grid">
+          <div>
+            <div class="small" style="margin-bottom:6px;">Current Image Path</div>
+            <input class="input" value="${img}" oninput="window.__setOverride(${q.id}, this.value)" style="width:100%;" placeholder="../assets/asian-book/image7.png" />
+            <div class="small" style="margin-top:8px;">Tip: set path as ../assets/asian-book/imageN.png</div>
+          </div>
+          <div class="preview">${img ? `<img src="${img}" alt="preview" />` : '<span class="small">No image assigned</span>'}</div>
+        </div>
+      </div>`;
+    }).join('');
+
+    // Render confirmed mappings
+    renderConfirmed();
+  }
+
+  function renderConfirmed() {
+    const confirmedList = document.getElementById('confirmed-list');
+    const confirmed = getConfirmed();
+    
+    if (confirmed.length === 0) {
+      confirmedList.innerHTML = '<div class="card"><span class="small">No confirmed mappings yet</span></div>';
+      return;
+    }
+
+    confirmedList.innerHTML = confirmed.map(q => {
+      const img = getImage(q);
+      return `
+      <div class="card">
+        <div class="meta">
+          <span class="tag">#${q.id}</span>
+          <span class="tag">${q.topic || 'Uncategorized'}</span>
+          <span class="tag ok">✓ CONFIRMED</span>
+        </div>
+        <div class="q">${q.question || ''}</div>
+        <div class="grid">
+          <div>
+            <div class="small" style="margin-bottom:6px;">Assigned Image</div>
+            <div class="small" style="padding:9px 10px; background:var(--bg); border:1px solid var(--border); border-radius:6px; word-break:break-all;">${img}</div>
+            <button class="btn" onclick="window.__removeOverride(${q.id})" style="margin-top:8px; color:#e74c3c;">Remove Override</button>
+          </div>
+          <div class="preview">${img ? `<img src="${img}" alt="confirmed" />` : '<span class="small">No image</span>'}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  window.__setOverride = function(id, value) {
+    const q = QUESTIONS.find(x => Number(x.id) === Number(id));
+    if (!q) return;
+    setOverride(q, value);
+  };
+
+  window.__removeOverride = function(id) {
+    const q = QUESTIONS.find(x => Number(x.id) === Number(id));
+    if (!q) return;
+    setOverride(q, '');
+  };
+
+  document.getElementById('btn-figure').onclick = () => { mode = 'figure'; render(); };
+  document.getElementById('btn-all').onclick = () => { mode = 'all'; render(); };
+  document.getElementById('btn-unmapped').onclick = () => { mode = 'unmapped'; render(); };
+  document.getElementById('search').oninput = (e) => { search = e.target.value || ''; render(); };
+
+  document.getElementById('btn-export').onclick = () => {
+    const payload = JSON.stringify(overrides, null, 2);
+    document.getElementById('jsonOut').value = payload;
+  };
+
+  document.getElementById('btn-copy').onclick = async () => {
+    const ta = document.getElementById('jsonOut');
+    if (!ta.value) ta.value = JSON.stringify(overrides, null, 2);
+    await navigator.clipboard.writeText(ta.value);
+    alert('Overrides JSON copied. Paste into tmp/manual_image_overrides.json');
+  };
+
+  (function initImagePicker() {
+    const sel = document.getElementById('imgNo');
+    sel.innerHTML = Array.from({ length: MAX_IMAGE_NO }, (_, i) => i + 1)
+      .map(n => `<option value="${n}">image${n}.png</option>`)
+      .join('');
+    sel.value = '1';
+    sel.onchange = updateSelectedImagePreview;
+    document.getElementById('btn-prev-img').onclick = () => {
+      sel.value = String(Math.max(1, Number(sel.value) - 1));
+      updateSelectedImagePreview();
+    };
+    document.getElementById('btn-next-img').onclick = () => {
+      sel.value = String(Math.min(MAX_IMAGE_NO, Number(sel.value) + 1));
+      updateSelectedImagePreview();
+    };
+    document.getElementById('btn-assign-id').onclick = assignByQuestionId;
+    document.getElementById('btn-assign-text').onclick = assignByQuestionText;
+    updateSelectedImagePreview();
+  })();
+
+  render();
+</script>
+</body>
+</html>

@@ -1,0 +1,1345 @@
+[
+  {
+    "reason": "missing-options",
+    "stem": "In any electric network, the sum of the incoming currents at each junction is",
+    "optionsFound": [
+      "equal to the sum of the outgoing currents."
+    ],
+    "index": 78,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "What is the formula to be used to find the power, if the current and voltage values are known?",
+    "optionsFound": [
+      "V × I",
+      "V 2 × I",
+      "V × I 2"
+    ],
+    "index": 105,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Though the l.C.D.P. switch of an electrical installation is in “OFF\" position, load connected to the switch is functioning normally. This is due to......",
+    "optionsFound": [
+      "Earth fault between L & E in the switch",
+      "Loose handle fixed on baffle carrier rod of switch",
+      "Short between L & N in the switch"
+    ],
+    "index": 839,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "A circuit breaker normally operates........",
+    "optionsFound": [
+      "whenever fault occurs in the line"
+    ],
+    "index": 983,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "when the power is to be supplied",
+    "optionsFound": [
+      "whenever fault occurs in the line"
+    ],
+    "index": 984,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "when the line is to be tested",
+    "optionsFound": [
+      "whenever fault occurs in the line"
+    ],
+    "index": 985,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "when the switch is to be put on",
+    "optionsFound": [
+      "whenever fault occurs in the line"
+    ],
+    "index": 986,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "in a minimum oil Circuit breaker, the oils used",
+    "optionsFound": [
+      "to act as circuit breaking medium only"
+    ],
+    "index": 1013,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Which one of the following is not applicable to MCB?",
+    "optionsFound": [
+      "Tamper proof as they are sealed",
+      "Used for close excess current protection"
+    ],
+    "index": 1078,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Used for control as well as to protect the circuit",
+    "optionsFound": [
+      "Used for coarse excess current protection."
+    ],
+    "index": 1081,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "An earthing connection to a GI pipe is necessary.",
+    "optionsFound": [
+      "To prevent a damage to the insulation of wires",
+      "To prevent a damage to the wires"
+    ],
+    "index": 1214,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Which one of the following acts as depolariser in a dry cell?",
+    "optionsFound": [
+      "Manganese dioxide"
+    ],
+    "index": 1412,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Zinc chloride?",
+    "optionsFound": [
+      "Ammonium chloride",
+      "Carbon powder"
+    ],
+    "index": 1414,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The disadvantage of constant current battery charging method is —",
+    "optionsFound": [
+      "its charge efficiency is low",
+      "it takes comparatively long time to charge a battery fully"
+    ],
+    "index": 1658,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "in it, per ‘cell charging voltage should no exceed 2.3 to 2.5 volts.",
+    "optionsFound": [
+      "all the three problems stated above"
+    ],
+    "index": 1661,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Which of the following statement is true for the circuit shown below:",
+    "optionsFound": [
+      "The total voltage is 24 V",
+      "The total voltage is zero"
+    ],
+    "index": 1668,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "A spark must not be-produced when a fully charged battery is.either being disconnected from a bench charger or being fitted to a vehicle because.........",
+    "optionsFound": [
+      "gas leaving the cells is highly explosive"
+    ],
+    "index": 1815,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "gas produced by a sudden battery discharge is corrosive.",
+    "optionsFound": [
+      "spark and gas react to form dangerous fumes.",
+      "Spark can cause the battery polarity to reverse"
+    ],
+    "index": 1817,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "If the electrolyte level is low in a lead – acid battery, the battery should be topped up with………..",
+    "optionsFound": [
+      "diluted acid",
+      "clean distilled water",
+      "sulphuric acid and having a relative density of 1.280."
+    ],
+    "index": 1825,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Which one of the following is NOT a property of a magnet?",
+    "optionsFound": [
+      "Produces magnetism in a nearby magnetic substance by induction,",
+      "Unlike poles repel each/other, and like I poles attract each other",
+      "Attracts magnetic substances like iron and steel"
+    ],
+    "index": 2195,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "When suspended freely moves to a fixed position relative to North and of earth South pole",
+    "optionsFound": [
+      "Produces magnetism in a nearby magnetic substance by induction,",
+      "Unlike poles repel each/other, and like I poles attract each other",
+      "Attracts magnetic substances like iron and steel"
+    ],
+    "index": 2196,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The power factor of an ac. circuit can be determined by the formula",
+    "optionsFound": [
+      "Cos ϕ =",
+      "Cos ϕ =",
+      "All of above"
+    ],
+    "index": 2419,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "A contactor coil is designed for 220 V. d. c. What happens if it is connected to 220 V a c.?",
+    "optionsFound": [
+      "it draws the same current",
+      "it works better"
+    ],
+    "index": 2511,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Too large a current is drawn by the coil and it may destroy",
+    "optionsFound": [
+      "it draws the same current",
+      "it works better"
+    ],
+    "index": 2512,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The positive and negative halves of a complex wave are symmetrical when",
+    "optionsFound": [
+      "it contains even harmonics"
+    ],
+    "index": 2544,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "phase difference between even harmonics and fundamental is 0 to p",
+    "optionsFound": [
+      "it contains odd harmonics"
+    ],
+    "index": 2546,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "they can work both on positive and negative supplies",
+    "optionsFound": [
+      "they consist of both P-type and N-type semiconductor"
+    ],
+    "index": 2705,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the conduction of current through them is caused by both holes and free electrons",
+    "optionsFound": [
+      "of ail the three above stated reasons"
+    ],
+    "index": 2707,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "In a multivibrator",
+    "optionsFound": [
+      "feedback between two stages is 100%",
+      "feedback employed is positive."
+    ],
+    "index": 3004,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Lines are drawn on the middle portion of capping so that:",
+    "optionsFound": [
+      "the same looks beautiful.",
+      "the screws can drill the wires."
+    ],
+    "index": 3080,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the screws can be fitted at proper places in the wiring.",
+    "optionsFound": [
+      "the same remains safe"
+    ],
+    "index": 3083,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "For tapping Supply from mains to different branches three types of layout for wiring system are used. As per lE regulation,",
+    "optionsFound": [
+      "one ring main circuit has to be there for",
+      "every specified floor area or part there"
+    ],
+    "index": 3179,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "To determine the size of cable the following formula is given below as: Cross sectional area of the wire",
+    "optionsFound": [
+      "="
+    ],
+    "index": 3261,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Polarity test ensures safety to the user and also to the electrician. Verification of polarity in an installation is to ensure that........",
+    "optionsFound": [
+      "Maintenance schedule. needs to be decided, based on the maintenance reports entered in the maintenance card",
+      "Maintenance could be done either during the Working of the machine or during short interval down periods.",
+      "Maintenance is performed at irregular frequencies."
+    ],
+    "index": 3286,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the fuses are connected in the phase wire and the single pole switches are connected in the neutral wire",
+    "optionsFound": [
+      "Maintenance schedule. needs to be decided, based on the maintenance reports entered in the maintenance card",
+      "Maintenance could be done either during the Working of the machine or during short interval down periods.",
+      "Maintenance is performed at irregular frequencies."
+    ],
+    "index": 3287,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the fuses are connected in the neutral, wire and the single pole switches are connected to the, phase wire",
+    "optionsFound": [
+      "Maintenance schedule. needs to be decided, based on the maintenance reports entered in the maintenance card",
+      "Maintenance could be done either during the Working of the machine or during short interval down periods.",
+      "Maintenance is performed at irregular frequencies."
+    ],
+    "index": 3288,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the fuses and the single pole switches are connected in the phase wire",
+    "optionsFound": [
+      "Maintenance schedule. needs to be decided, based on the maintenance reports entered in the maintenance card",
+      "Maintenance could be done either during the Working of the machine or during short interval down periods.",
+      "Maintenance is performed at irregular frequencies."
+    ],
+    "index": 3289,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the fuses and the single pole switches are connected in the neutral wire",
+    "optionsFound": [
+      "Maintenance schedule. needs to be decided, based on the maintenance reports entered in the maintenance card",
+      "Maintenance could be done either during the Working of the machine or during short interval down periods.",
+      "Maintenance is performed at irregular frequencies."
+    ],
+    "index": 3290,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Which statement describes a characteristics features of routine preventive maintenance?",
+    "optionsFound": [
+      "Maintenance schedule. needs to be decided, based on the maintenance reports entered in the maintenance card",
+      "Maintenance could be done either during the Working of the machine or during short interval down periods.",
+      "Maintenance is performed at irregular frequencies."
+    ],
+    "index": 3291,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "What is the purpose of providing a mirror behind the pointer in a measuring instrument?",
+    "optionsFound": [
+      "The scale is illuminated through the mirror"
+    ],
+    "index": 3562,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "To observe that the pointer is bend or not",
+    "optionsFound": [
+      "Being semi-transparent, a mirror helps in the study of construction of the instrument",
+      "To make the reading free from an error by removing parallax) between the pointer and its image inner"
+    ],
+    "index": 3564,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Which one of the following statements is true",
+    "optionsFound": [
+      "it is a high frequency measuring instrument"
+    ],
+    "index": 3572,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "about the instrument in the given figure?",
+    "optionsFound": [
+      "it is a high frequency measuring instrument"
+    ],
+    "index": 3573,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the maximum value of a physical quantity that can be measured",
+    "optionsFound": [
+      "the highest reading of the scale",
+      "the minimum reading of the scale"
+    ],
+    "index": 3590,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "If the connections of a M.l. instrument used in a circuit are interchanged then:",
+    "optionsFound": [
+      "it will not give a reading",
+      "its reading will not change"
+    ],
+    "index": 3604,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "An electrodynamics meter can be used to measure: ‘",
+    "optionsFound": [
+      "ac. voltage",
+      "dc. voltage.",
+      "do as well as ac. voltage"
+    ],
+    "index": 3644,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "When an instrument is using gravity control, it can read correctly...............",
+    "optionsFound": [
+      "if it is used in horizontal position only",
+      "if it is used in vertical position only"
+    ],
+    "index": 3785,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The circuit for measuring resistance with a multimeter is shown in the figure, To get the correct indication en the dial an adjustment of the potentiometer Rp must be made before each range of measurement.",
+    "optionsFound": [
+      "Ground the secondary terminals on pen circuit",
+      "The terminals of the potential transformer secondary have to be short circuited.",
+      "After disconnecting, connect a low resistance shunt between the terminal of the secondary"
+    ],
+    "index": 3960,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The correct method of adjustment is, with the measuring terminals A and B.........",
+    "optionsFound": [
+      "Ground the secondary terminals on pen circuit",
+      "The terminals of the potential transformer secondary have to be short circuited.",
+      "After disconnecting, connect a low resistance shunt between the terminal of the secondary"
+    ],
+    "index": 3962,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "short circuited, the pointer should be set at as on the scale",
+    "optionsFound": [
+      "Ground the secondary terminals on pen circuit",
+      "The terminals of the potential transformer secondary have to be short circuited.",
+      "After disconnecting, connect a low resistance shunt between the terminal of the secondary"
+    ],
+    "index": 3963,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "open, the pointer should be set at ∞ on the scale",
+    "optionsFound": [
+      "Ground the secondary terminals on pen circuit",
+      "The terminals of the potential transformer secondary have to be short circuited.",
+      "After disconnecting, connect a low resistance shunt between the terminal of the secondary"
+    ],
+    "index": 3964,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "short circuited, the pointer should be: set at the middle of the scale",
+    "optionsFound": [
+      "Ground the secondary terminals on pen circuit",
+      "The terminals of the potential transformer secondary have to be short circuited.",
+      "After disconnecting, connect a low resistance shunt between the terminal of the secondary"
+    ],
+    "index": 3965,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Short circuited, the pointer should be set a 0 on the scale.",
+    "optionsFound": [
+      "Ground the secondary terminals on pen circuit",
+      "The terminals of the potential transformer secondary have to be short circuited.",
+      "After disconnecting, connect a low resistance shunt between the terminal of the secondary"
+    ],
+    "index": 3966,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "What precautions you have to take when disconnecting voltmeter from potential transformers?",
+    "optionsFound": [
+      "Ground the secondary terminals on pen circuit",
+      "The terminals of the potential transformer secondary have to be short circuited.",
+      "After disconnecting, connect a low resistance shunt between the terminal of the secondary"
+    ],
+    "index": 3967,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Potential transformers secondary terminals which are open should be insulated",
+    "optionsFound": [
+      "Ground the secondary terminals on pen circuit",
+      "The terminals of the potential transformer secondary have to be short circuited.",
+      "After disconnecting, connect a low resistance shunt between the terminal of the secondary"
+    ],
+    "index": 3968,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Which of the following statements is incorrect:",
+    "optionsFound": [
+      "right-hand rule"
+    ],
+    "index": 4013,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Whenever the flux linking through a coil or a circuit changes, e. m..f is produced",
+    "optionsFound": [
+      "right-hand rule"
+    ],
+    "index": 4014,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The direction of dynamically induced e.m.f. can be determined by applying Fleming’s",
+    "optionsFound": [
+      "right-hand rule"
+    ],
+    "index": 4015,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The method which can be used to improve commutation process is:",
+    "optionsFound": [
+      "to increase the resistance of brushes",
+      "to neutralise the reactance voltage by producing a reversing e.m.f. in the short-circuited coil under commutation",
+      "all the above"
+    ],
+    "index": 4115,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Which among the following statements is not correct?",
+    "optionsFound": [
+      "As the shunt field current increases, the induced voltage also increases initially",
+      "As-the speed of the DC generator increases, the induced-voltage also increases up to a certain extent"
+    ],
+    "index": 4379,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The best method of stopping a DC shunt generator is to open the field circuit switch",
+    "optionsFound": [
+      "As the shunt field current increases, the induced voltage also increases initially",
+      "As-the speed of the DC generator increases, the induced-voltage also increases up to a certain extent"
+    ],
+    "index": 4380,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The existence of residual magnetism is must in a self-excited DC generator",
+    "optionsFound": [
+      "As the shunt field current increases, the induced voltage also increases initially",
+      "As-the speed of the DC generator increases, the induced-voltage also increases up to a certain extent"
+    ],
+    "index": 4381,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "A force will act on a conductor placed in a magnetic field when:",
+    "optionsFound": [
+      "a current is flowing in the conductor",
+      "the conductor is rotating"
+    ],
+    "index": 4400,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "it will continue to run at the rated speed",
+    "optionsFound": [
+      "its speed will become very high",
+      "the motor will stop",
+      "its speed will reduce"
+    ],
+    "index": 4511,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "For which one of the following applications D.C Series motor is used?",
+    "optionsFound": [
+      "Drives a machine drives tools and belt",
+      "Rolling mill drives and other drives with toad characteristic"
+    ],
+    "index": 4597,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Drives that can be started and run in no-load operation",
+    "optionsFound": [
+      "Electrical trams or trains and other vehicle drives independent speed"
+    ],
+    "index": 4600,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "What will be the consequences if the field circuit of a DC. shunt motor is opened when the motor is running at no load condition?",
+    "optionsFound": [
+      "The motor speed will be reduced drastically",
+      "The torque of the motor will be increased",
+      "The motor speed could become"
+    ],
+    "index": 4663,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "In a power transformer, the winding nearer to the iron core:",
+    "optionsFound": [
+      "is a high voltage winding",
+      "is a low voltage winding",
+      "may be low or high voltage winding"
+    ],
+    "index": 4846,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "What is the formula used to find out the full load current in three phase transformer?",
+    "optionsFound": [
+      "3 V.I. cos Ɵ",
+      "cos Ɵ"
+    ],
+    "index": 4901,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "A 3-phase alternator is connected in delta Reactance of each phase is 100 Ὡ and is rated to produce 415 volts.",
+    "optionsFound": [
+      "connection When the alternator is running"
+    ],
+    "index": 5410,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "What is the current flow within delta",
+    "optionsFound": [
+      "connection When the alternator is running"
+    ],
+    "index": 5412,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "if the induction-motor of a pump is operated at 30%‘less supply voltage then what will happen?",
+    "optionsFound": [
+      "It will start after some time"
+    ],
+    "index": 5508,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "It will continue to run at a lower speed without any damage",
+    "optionsFound": [
+      "Nothing adverse will happen."
+    ],
+    "index": 5510,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "it will get heated up and consequently will get damaged",
+    "optionsFound": [
+      "Nothing adverse will happen."
+    ],
+    "index": 5511,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "It is advisable to avoid the use of a (d)O.L. starter for starting an induction motor having 5HP. capacity because:",
+    "optionsFound": [
+      "the, starting torque will be very low"
+    ],
+    "index": 5518,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the motor will take five to seven times more starting current than its full load current",
+    "optionsFound": [
+      "it will run in the reverse direction."
+    ],
+    "index": 5520,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "it will pick-up very high speed and may go out of step",
+    "optionsFound": [
+      "it will run in the reverse direction."
+    ],
+    "index": 5521,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The induction motor of a pump is run at a supply voltage 30% lesser than the normal voltage (415 V). The pump starts to work After some time what possibly can happen?",
+    "optionsFound": [
+      "The motor will start after some time",
+      "The meter will function normally",
+      "None of the stated above will happen."
+    ],
+    "index": 5635,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The motor will become hot and will be damaged",
+    "optionsFound": [
+      "The motor will start after some time",
+      "The meter will function normally",
+      "None of the stated above will happen."
+    ],
+    "index": 5636,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "When a stationary 3-phase induction motor is switched on with one phase disconnected –",
+    "optionsFound": [
+      "it will start, but very slowly"
+    ],
+    "index": 5772,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "it is likely to burn out quickly unless immediately disconnected.",
+    "optionsFound": [
+      "it will start, but very slowly"
+    ],
+    "index": 5773,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "it will make jerky start with loud growing noise",
+    "optionsFound": [
+      "It single phasing of a 3-phase induction motor occurs under running conditions, it"
+    ],
+    "index": 5775,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "remaining intact fuses will be blown out due to heavy inrush of current",
+    "optionsFound": [
+      "It single phasing of a 3-phase induction motor occurs under running conditions, it"
+    ],
+    "index": 5776,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "lf single phasing occurs during running of a 3 phase motor, what is the effect on motor performance?",
+    "optionsFound": [
+      "Continue to run on 2 phases, draws excess current, winding likely to burn."
+    ],
+    "index": 5778,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Motor will run as 2 phase motor and performs normally",
+    "optionsFound": [
+      "Continue to run on 2 phases, draws excess current, winding likely to burn."
+    ],
+    "index": 5779,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Will continue to run on 2 phases but fails to take load.",
+    "optionsFound": [
+      "Continue to run on 2 phases, draws excess current, winding likely to burn."
+    ],
+    "index": 5780,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Run at reduced speed and can take only 2/3 of the load.",
+    "optionsFound": [
+      "The new motor will be overheated"
+    ],
+    "index": 5782,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "You have to change the defective induction motor of a machine. The available motor is of a higher capacity than the existing one. What is the effect of using a higher capacity motor?",
+    "optionsFound": [
+      "The new motor will be overheated"
+    ],
+    "index": 5783,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The new motor is better suitable for this work",
+    "optionsFound": [
+      "The new motor has a longer useful working life and efficiency"
+    ],
+    "index": 5785,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The efficiency and the power factor will become low",
+    "optionsFound": [
+      "The new motor has a longer useful working life and efficiency"
+    ],
+    "index": 5786,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The handle of the Star/Delta starter shown in the figure does not hold at delta position. The reason for the above is that the.........",
+    "optionsFound": [
+      "aluminium cables may not have the same voltage grading as copper babies."
+    ],
+    "index": 5868,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "hold on coil circuit is open at delta position",
+    "optionsFound": [
+      "aluminium cables may not have the same voltage grading as copper babies."
+    ],
+    "index": 5870,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "hold on coil circuit will not get the potential difference in delta",
+    "optionsFound": [
+      "aluminium cables may not have the same voltage grading as copper babies."
+    ],
+    "index": 5871,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "motor terminal connection at delta position is not correct",
+    "optionsFound": [
+      "aluminium cables may not have the same voltage grading as copper babies."
+    ],
+    "index": 5872,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "connection is such that the hold on coil circuit will function at star but not in delta",
+    "optionsFound": [
+      "aluminium cables may not have the same voltage grading as copper babies."
+    ],
+    "index": 5873,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "A 3-phase 15 HP, 415 V, 50 Hz squirrel cage motors star delta starter cables are found to be defective. Copper cables are replaced by same current capacity aluminium cables through the same metal conduit pipe. When the motor starter, connections were properly done and the motor started, the fuses have blown off. the reason for the above is.....",
+    "optionsFound": [
+      "aluminium cables may not have the same voltage grading as copper babies."
+    ],
+    "index": 5874,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "aluminium cable insulation is weaker when compared to copper cable",
+    "optionsFound": [
+      "aluminium cables may not have the same voltage grading as copper babies."
+    ],
+    "index": 5875,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the supply voltage is more than the capacity of the motor",
+    "optionsFound": [
+      "the brush length is reduced by 10%"
+    ],
+    "index": 6109,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "In repulsion start induction run motors, while the motor is running the brushes will..........",
+    "optionsFound": [
+      "remain on“ commutator with their terminals shorted"
+    ],
+    "index": 6292,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "be lifted from commutator and are shorted through a mechanism",
+    "optionsFound": [
+      "remain on“ commutator with their terminals shorted"
+    ],
+    "index": 6293,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "be lifted from commutator and the commutator is shorted by a mechanism",
+    "optionsFound": [
+      "remain on“ commutator with their terminals shorted"
+    ],
+    "index": 6294,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the no. of coils per pole per phase is one",
+    "optionsFound": [
+      "the no. of coils per phase is one"
+    ],
+    "index": 6409,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the no. of coils per pole per phase is more than one",
+    "optionsFound": [
+      "the no. of coils per phase is one"
+    ],
+    "index": 6410,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The principle of working of a H.P.M.V. lamps is that",
+    "optionsFound": [
+      "the radiation from the discharge excites a fluorescent material",
+      "the radiation is produced directly by the discharge",
+      "the radiation is produced by the argon gas"
+    ],
+    "index": 6617,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "When fluorescent temps are used to replace incandescent bulbs usually:",
+    "optionsFound": [
+      "greater illumination occurs",
+      "less illumination occurs",
+      "only one colour can be obtained"
+    ],
+    "index": 6627,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "What is the advantage of a parallel twin-tube, fluorescent lamp circuit?",
+    "optionsFound": [
+      "A very small current flows in both the branches"
+    ],
+    "index": 6652,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The true power consumption of the circuit is almost zero",
+    "optionsFound": [
+      "A very small current flows in both the branches"
+    ],
+    "index": 6653,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The advantage of a preheat fluorescent lamp as compared to incandescent lamp is that it:",
+    "optionsFound": [
+      "has a faster illumination",
+      "provides less illumination per watt",
+      "generally has a longer life"
+    ],
+    "index": 6677,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "What is the purpose of the choke after the fluorescent tube is just, lighted to its full brightness?",
+    "optionsFound": [
+      "Smoothing the sinusoidal operating current",
+      "Limiting the current flowing through the fluorescent tube filaments",
+      "Heating the filaments continuously during operation"
+    ],
+    "index": 6732,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "For supplying a higher operating current",
+    "optionsFound": [
+      "Smoothing the sinusoidal operating current",
+      "Limiting the current flowing through the fluorescent tube filaments",
+      "Heating the filaments continuously during operation"
+    ],
+    "index": 6733,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "effects of dust, dirt and typeset lamps used?",
+    "optionsFound": [
+      "effects of dust, dirt and fall in light output of the lamp during its life"
+    ],
+    "index": 6882,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Transformer coupling is not preferred in audio frequency amplifiers because —",
+    "optionsFound": [
+      "its cost is high",
+      "it is bulky"
+    ],
+    "index": 7098,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "it does not give a uniform frequency response over the entire at range",
+    "optionsFound": [
+      "all the above stated drawbacks"
+    ],
+    "index": 7101,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "conduction across them is due to both ‘holes’ and ‘free electron’ V",
+    "optionsFound": [
+      "they work on both positive and negative supplies",
+      "all the above stated reasons"
+    ],
+    "index": 7465,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The main difference between a function generator and A.F. generator is this that a function generator can:",
+    "optionsFound": [
+      "none of the stated above"
+    ],
+    "index": 7474,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "produce sine wave but at. generator can produce square wave only",
+    "optionsFound": [
+      "none of the stated above"
+    ],
+    "index": 7475,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "produce sine wave, square wave, triangular waves but at generator can produce sine wave only",
+    "optionsFound": [
+      "none of the stated above"
+    ],
+    "index": 7476,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "produce triangular wave but at generator can produce sine wave only",
+    "optionsFound": [
+      "none of the stated above"
+    ],
+    "index": 7477,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "When a thyristor is in ON state, its gate drive be",
+    "optionsFound": [
+      "removed to save power",
+      "removed or may not be removed"
+    ],
+    "index": 7621,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "An emitter follower is widely used in electronic instruments as",
+    "optionsFound": [
+      "its voltage gain is very high.",
+      "its voltage gain never exceeds unity."
+    ],
+    "index": 7842,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "its element is closed in a sand tilled spiral, narrow pipe",
+    "optionsFound": [
+      "it can’t be opened",
+      "it gets burst on becoming defective"
+    ],
+    "index": 8022,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Why it is not possible to do the troubleshooting in electrical equipments having short-circuit, with the operating voltage?",
+    "optionsFound": [
+      "The high short-circuit current could destroy the measuring instrument"
+    ],
+    "index": 8051,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "A heater with name plate markings of 250 V 1000 W, heater element 500°C is connected to 230 V supply. What will happen to the heater?",
+    "optionsFound": [
+      "The output heat remains the same"
+    ],
+    "index": 8086,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The glow of the heater element will be dim",
+    "optionsFound": [
+      "The efficiency will increase"
+    ],
+    "index": 8088,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The glow will be brighter because of more current",
+    "optionsFound": [
+      "The efficiency will increase"
+    ],
+    "index": 8089,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "When a housewife accidently touched the metal part of the handle of a kettle, which was kept ‘ON’ she received shock. The reason is.........",
+    "optionsFound": [
+      "the kettle is not earthed",
+      "there is no water in the kettle",
+      "the Safety, plug has become defective"
+    ],
+    "index": 8111,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "the fuse wire in the circuit is of higher capacity",
+    "optionsFound": [
+      "the kettle is not earthed",
+      "there is no water in the kettle",
+      "the Safety, plug has become defective"
+    ],
+    "index": 8112,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "You have to repair a geyser, which does not provide hot water. What can be the possible cause?",
+    "optionsFound": [
+      "Thermostat contacts are welded together."
+    ],
+    "index": 8191,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Thermostat does not disconnect the heater from the supply.",
+    "optionsFound": [
+      "Open in the thermostat contacts.",
+      "Thermostat set too high or out of calibration."
+    ],
+    "index": 8193,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "There is a fault in the geyser ie. it does not provide hot water when it is switched “ON\". What may be the cause for this fault?",
+    "optionsFound": [
+      "Thermostat contacts are in open condition",
+      "Thermostat contacts are welded together",
+      "Thermostat is set in too high range"
+    ],
+    "index": 8201,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "What will happen when 12 V, 50 Hz A.C. relay is connected to a 12 V, D.C. supply?",
+    "optionsFound": [
+      "The relay draws more current in the absence of inductive reactance which bruns out the coil"
+    ],
+    "index": 8362,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The switching speed will be increased because of more current drawn by relay",
+    "optionsFound": [
+      "The relay draws more current in the absence of inductive reactance which bruns out the coil"
+    ],
+    "index": 8363,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "The switching capacity of the relay will be decreased very strongly",
+    "optionsFound": [
+      "The relay draws more current in the absence of inductive reactance which bruns out the coil"
+    ],
+    "index": 8364,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "they can be used as base load and peak load plants as well",
+    "optionsFound": [
+      "all of the above",
+      "In hydroelectric power plants"
+    ],
+    "index": 8436,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "does not possess the basic requirements of any energy source",
+    "optionsFound": [
+      "is plentiful, inexhaustible, renewable and non-polluting",
+      "all of the above"
+    ],
+    "index": 8595,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "Corona loss can be reduced by the use of hollow conductors because",
+    "optionsFound": [
+      "the current density is reduced",
+      "the eddy current in the conductor is eliminated"
+    ],
+    "index": 8972,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "for a given cross section, the radius of the conductor is increased",
+    "optionsFound": [
+      "of better ventilation in the conductor"
+    ],
+    "index": 8975,
+    "hasImg": false
+  },
+  {
+    "reason": "missing-options",
+    "stem": "corona glow will be uniform along the length of the conductor",
+    "optionsFound": [
+      "there will be minimum power loss",
+      "hissing sound will be more intense"
+    ],
+    "index": 8984,
+    "hasImg": false
+  }
+]
