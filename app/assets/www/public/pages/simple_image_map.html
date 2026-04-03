@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simple Image Mapper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#f5f7fb; --surface:#ffffff; --surface2:#f1f5f9; --border:#d8e0ea;
+    --accent:#2563eb; --accent2:#0f766e; --text:#142033; --muted:#667085; --success:#2ecc71;
+    --font-display:'IBM Plex Sans',sans-serif; --font-mono:'IBM Plex Mono',monospace; --font-body:'IBM Plex Sans',sans-serif;
+  }
+  body { background:var(--bg); color:var(--text); font-family:var(--font-body); min-height:100vh; padding:0; margin:0; }
+  body::before { content:''; position:fixed; inset:0; background: radial-gradient(circle at top left, rgba(37,99,235,0.08), transparent 32%), radial-gradient(circle at bottom right, rgba(15,118,110,0.05), transparent 30%); pointer-events:none; z-index:0; }
+  
+  .container { position:relative; z-index:1; display:flex; gap:24px; padding:28px; max-width:1600px; margin:0 auto; min-height:100vh; }
+  
+  /* Image viewer */
+  .viewer { flex:1; display:flex; flex-direction:column; gap:16px; }
+  .viewer-header { font-family:var(--font-display); font-size:24px; letter-spacing:2px; }
+  .viewer-img-wrap { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; flex:1; display:flex; align-items:center; justify-content:center; min-height:400px; }
+  .viewer-img-wrap img { max-width:100%; max-height:100%; object-fit:contain; }
+  .viewer-nav { display:flex; gap:12px; align-items:center; }
+  .nav-btn { background:transparent; border:1px solid var(--border); color:var(--muted); padding:10px 16px; border-radius:6px; cursor:pointer; font-family:var(--font-mono); font-size:12px; }
+  .nav-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .nav-info { font-family:var(--font-mono); font-size:13px; color:var(--muted); min-width:120px; text-align:center; }
+  
+  /* Mapper */
+  .mapper { width:380px; display:flex; flex-direction:column; gap:16px; }
+  .mapper-title { font-family:var(--font-display); font-size:20px; letter-spacing:2px; }
+  .mapper-box { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:16px; display:flex; flex-direction:column; gap:12px; }
+  
+  .input-group label { font-family:var(--font-mono); font-size:11px; letter-spacing:1px; color:var(--muted); display:block; margin-bottom:6px; }
+  .input-group input, .input-group textarea { width:100%; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:10px; font-family:var(--font-mono); font-size:13px; outline:none; }
+  .input-group input:focus, .input-group textarea:focus { border-color:var(--accent); }
+  .input-group textarea { min-height:80px; resize:vertical; }
+  
+  .btn { background:var(--accent); color:#000; border:none; padding:12px 16px; border-radius:6px; font-family:var(--font-display); font-size:16px; letter-spacing:1px; cursor:pointer; }
+  .btn:hover { background:#1d4ed8; }
+  
+  .mapped-list { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:12px; max-height:500px; overflow-y:auto; }
+  .mapped-item { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:10px; margin-bottom:8px; font-family:var(--font-mono); font-size:12px; display:flex; justify-content:space-between; align-items:center; }
+  .mapped-img { color:var(--accent); font-weight:600; }
+  .mapped-q { color:var(--muted); }
+  .mapped-remove { cursor:pointer; color:#e74c3c; }
+  .mapped-remove:hover { color:#1d4ed8; }
+  
+  .export-btn { background:var(--accent2); font-size:14px; }
+  .export-btn:hover { background:#1d4ed8; }
+  
+  @media (max-width: 1100px) { .container { flex-direction:column; } .mapper { width:100%; } }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="viewer">
+    <div class="viewer-header">IMAGE MAPPER</div>
+    <div class="viewer-img-wrap">
+      <img id="currentImg" src="" alt="Current image" />
+    </div>
+    <div class="viewer-nav">
+      <button class="nav-btn" id="btn-prev">← PREV</button>
+      <div class="nav-info"><span id="imgNum">1</span> / <span id="imgTotal">108</span></div>
+      <button class="nav-btn" id="btn-next">NEXT →</button>
+    </div>
+  </div>
+
+  <div class="mapper">
+    <div class="mapper-title">MAP THIS IMAGE</div>
+    
+    <div class="mapper-box">
+      <div class="input-group">
+        <label>Question ID</label>
+        <input type="number" id="qId" placeholder="e.g. 37" />
+      </div>
+      
+      <div style="font-family:var(--font-mono); font-size:11px; color:var(--muted); text-align:center;">OR</div>
+      
+      <div class="input-group">
+        <label>Question Text (partial ok)</label>
+        <textarea id="qText" placeholder="Paste or type question..."></textarea>
+      </div>
+      
+      <button class="btn" id="btn-map">ASSIGN & NEXT</button>
+    </div>
+
+    <div>
+      <div style="font-family:var(--font-mono); font-size:11px; letter-spacing:1px; color:var(--muted); margin-bottom:8px;">MAPPED THIS SESSION</div>
+      <div class="mapped-list" id="mapped-list"></div>
+    </div>
+
+    <button class="btn export-btn" id="btn-export">EXPORT & APPLY</button>
+  </div>
+</div>
+
+<script src="../../src/data/asian_book_questions.js"></script>
+<script>
+  const QUESTIONS = (typeof ASIAN_BOOK_QUESTIONS !== 'undefined' && Array.isArray(ASIAN_BOOK_QUESTIONS)) ? ASIAN_BOOK_QUESTIONS : window.ASIAN_BOOK_QUESTIONS || [];
+  const MAX_IMG = 108;
+  
+  let currentImg = 1;
+  let sessionMappings = {}; // { imageN.png: 'question text' or question ID }
+
+  function updateImage() {
+    document.getElementById('currentImg').src = `../assets/asian-book/image${currentImg}.png`;
+    document.getElementById('imgNum').textContent = currentImg;
+    document.getElementById('qId').value = '';
+    document.getElementById('qText').value = '';
+  }
+
+  function normalizeText(t) {
+    return String(t || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  }
+
+  function findQuestion(input) {
+    const trimmed = String(input || '').trim();
+    
+    // Try as ID
+    const asId = Number(trimmed);
+    if (Number.isFinite(asId)) {
+      const q = QUESTIONS.find(x => Number(x.id) === asId);
+      if (q) return { id: q.id, text: q.question };
+    }
+
+    // Try as text
+    const n = normalizeText(trimmed);
+    let q = QUESTIONS.find(x => normalizeText(x.question) === n);
+    if (!q) {
+      q = QUESTIONS.find(x => normalizeText(x.question).includes(n));
+    }
+    if (!q) {
+      q = QUESTIONS.find(x => n.includes(normalizeText(x.question)));
+    }
+    if (q) return { id: q.id, text: q.question };
+    
+    return null;
+  }
+
+  function mapImage() {
+    const idVal = document.getElementById('qId').value.trim();
+    const textVal = document.getElementById('qText').value.trim();
+    const input = idVal || textVal;
+
+    if (!input) {
+      alert('Enter question ID or text');
+      return;
+    }
+
+    const found = findQuestion(input);
+    if (!found) {
+      alert('Question not found. Try different ID or text.');
+      return;
+    }
+
+    const imgKey = `image${currentImg}.png`;
+    sessionMappings[imgKey] = found.id;
+    renderMappedList();
+
+    if (currentImg < MAX_IMG) {
+      currentImg++;
+      updateImage();
+    }
+  }
+
+  function renderMappedList() {
+    const list = document.getElementById('mapped-list');
+    const entries = Object.entries(sessionMappings).map(([img, qId]) => {
+      const q = QUESTIONS.find(x => Number(x.id) === Number(qId));
+      return { img, qId, qText: q ? q.question.substring(0, 60) + (q.question.length > 60 ? '...' : '') : 'Unknown' };
+    });
+
+    if (entries.length === 0) {
+      list.innerHTML = '<div style="color:var(--muted); font-size:11px; padding:8px;">None yet</div>';
+      return;
+    }
+
+    list.innerHTML = entries.map(e => `
+      <div class="mapped-item">
+        <div><span class="mapped-img">${e.img}</span> → <span class="mapped-q">#${e.qId}</span></div>
+        <span class="mapped-remove" onclick="window.__removeMapping('${e.img}')">✕</span>
+      </div>
+    `).join('');
+  }
+
+  window.__removeMapping = function(img) {
+    delete sessionMappings[img];
+    renderMappedList();
+  };
+
+  async function exportAndApply() {
+    if (Object.keys(sessionMappings).length === 0) {
+      alert('No mappings to export');
+      return;
+    }
+
+    const payload = {
+      questionIdToImage: {},
+      questionTextToImage: {}
+    };
+
+    // Convert to question-ID-to-image format (reverse of what we have)
+    Object.entries(sessionMappings).forEach(([img, qId]) => {
+      const imgPath = `../assets/asian-book/${img}`;
+      payload.questionIdToImage[String(qId)] = imgPath;
+    });
+
+    const json = JSON.stringify(payload, null, 2);
+    console.log('Payload:', json);
+
+    try {
+      const res = await fetch('/api/save-overrides', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: json
+      });
+
+      if (res.ok) {
+        alert('Mappings saved! Now run npm run extract:questions to apply.');
+        sessionMappings = {};
+        renderMappedList();
+      } else {
+        fallbackExport(json);
+      }
+    } catch (e) {
+      fallbackExport(json);
+    }
+  }
+
+  function fallbackExport(json) {
+    const ta = document.createElement('textarea');
+    ta.value = json;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('JSON copied to clipboard! Paste into tmp/manual_image_overrides.json then run: npm run extract:questions');
+  }
+
+  document.getElementById('btn-prev').onclick = () => {
+    if (currentImg > 1) {
+      currentImg--;
+      updateImage();
+    }
+  };
+
+  document.getElementById('btn-next').onclick = () => {
+    if (currentImg < MAX_IMG) {
+      currentImg++;
+      updateImage();
+    }
+  };
+
+  document.getElementById('btn-map').onclick = mapImage;
+  document.getElementById('qId').onkeypress = (e) => { if (e.key === 'Enter') mapImage(); };
+  document.getElementById('qText').onkeypress = (e) => { if (e.ctrlKey && e.key === 'Enter') mapImage(); };
+
+  document.getElementById('btn-export').onclick = exportAndApply;
+
+  updateImage();
+  renderMappedList();
+</script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quick Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#f5f7fb; --surface:#ffffff; --border:#d8e0ea;
+    --accent:#2563eb; --text:#142033; --muted:#667085; --success:#2ecc71;
+    --font-display:'IBM Plex Sans',sans-serif; --font-mono:'IBM Plex Mono',monospace; --font-body:'IBM Plex Sans',sans-serif;
+  }
+  body { background:var(--bg); color:var(--text); font-family:var(--font-body); margin:0; padding:0; min-height:100vh; }
+  body::before { content:''; position:fixed; inset:0; background: radial-gradient(circle at top left, rgba(37,99,235,0.08), transparent 32%), radial-gradient(circle at bottom right, rgba(15,118,110,0.05), transparent 30%); pointer-events:none; }
+  
+  .split { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; min-height:100vh; gap:0; }
+  
+  /* Left - Image */
+  .left { background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px; position:relative; }
+  .img-display { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+  .img-display img { max-width:90%; max-height:90%; object-fit:contain; }
+  
+  .img-nav { position:absolute; bottom:24px; left:24px; right:24px; display:flex; gap:12px; justify-content:center; align-items:center; }
+  .nav-btn { background:transparent; border:1px solid var(--border); color:var(--muted); padding:8px 14px; border-radius:4px; cursor:pointer; font-family:var(--font-mono); font-size:12px; }
+  .nav-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .img-info { font-family:var(--font-mono); font-size:12px; color:var(--muted); }
+  
+  /* Right - Input */
+  .right { display:flex; flex-direction:column; padding:40px; gap:24px; }
+  .right-header { font-family:var(--font-display); font-size:28px; letter-spacing:2px; }
+  .input-section { flex:1; display:flex; flex-direction:column; gap:12px; }
+  .input-label { font-family:var(--font-mono); font-size:11px; letter-spacing:1px; color:var(--muted); }
+  textarea { width:100%; flex:1; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:6px; padding:14px; font-family:var(--font-body); font-size:14px; line-height:1.6; resize:none; outline:none; }
+  textarea:focus { border-color:var(--accent); }
+  
+  .save-btn { background:var(--accent); color:#fff; border:none; padding:14px 24px; border-radius:6px; font-family:var(--font-display); font-size:18px; letter-spacing:2px; cursor:pointer; }
+  .save-btn:hover { background:#1d4ed8; }
+  
+  .status { font-family:var(--font-mono); font-size:12px; min-height:20px; color:var(--muted); }
+  .status.ok { color:var(--success); }
+  .status.warn { color:var(--accent); }
+  .status.error { color:#e74c3c; }
+  
+  @media (max-width: 900px) { .split { grid-template-columns:1fr; } .left { border-right:none; border-bottom:1px solid var(--border); min-height:50vh; } }
+</style>
+</head>
+<body>
+
+<div class="split">
+  <div class="left">
+    <div class="img-display">
+      <img id="currentImg" src="" alt="Current image" />
+    </div>
+    <div class="img-nav">
+      <button class="nav-btn" id="btn-prev">← PREV</button>
+      <span class="img-info"><span id="imgNum">1</span> / 108</span>
+      <button class="nav-btn" id="btn-next">NEXT →</button>
+    </div>
+  </div>
+
+  <div class="right">
+    <div class="right-header">TYPE QUESTION</div>
+    <div class="input-section">
+      <div class="input-label">Paste or type the question text for this image:</div>
+      <textarea id="qText" placeholder="From the given figure..."></textarea>
+    </div>
+    <button class="save-btn" id="btn-save">SAVE & NEXT</button>
+    <div class="status" id="status"></div>
+    <button class="save-btn" style="background:#e8380d; margin-top:12px;" id="btn-export">EXPORT MAPPINGS</button>
+  </div>
+</div>
+
+<script src="../../src/data/asian_book_questions.js"></script>
+<script>
+  const QUESTIONS = (typeof ASIAN_BOOK_QUESTIONS !== 'undefined' && Array.isArray(ASIAN_BOOK_QUESTIONS)) ? ASIAN_BOOK_QUESTIONS : window.ASIAN_BOOK_QUESTIONS || [];
+  const MAX_IMG = 108;
+  const STORAGE_KEY = 'et_quick_map';
+  const SKIP_IMAGES = new Set([
+    63, 64, 65, 66,
+    72, 73, 74, 75,
+    84, 85, 86, 87,
+    101, 102, 103, 104
+  ]);
+  
+  let currentImg = 1;
+  let mappings = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+  function isSkippedImage(n) {
+    return SKIP_IMAGES.has(Number(n));
+  }
+
+  function isAlreadyMapped(n) {
+    return Object.prototype.hasOwnProperty.call(mappings, `image${n}`);
+  }
+
+  function findNextPending(from, step) {
+    let n = Number(from);
+    while (n >= 1 && n <= MAX_IMG) {
+      if (!isSkippedImage(n) && !isAlreadyMapped(n)) return n;
+      n += step;
+    }
+    return null;
+  }
+
+  function updateImage() {
+    document.getElementById('currentImg').src = `../assets/asian-book/image${currentImg}.png`;
+    document.getElementById('imgNum').textContent = currentImg;
+    document.getElementById('qText').value = '';
+    if (isSkippedImage(currentImg)) {
+      setStatus(`image${currentImg} is option-only (skipped)`, 'warn');
+    } else if (isAlreadyMapped(currentImg)) {
+      setStatus(`image${currentImg} already mapped (skipped)`, 'warn');
+    } else {
+      document.getElementById('status').textContent = '';
+    }
+  }
+
+  function normalizeText(t) {
+    return String(t || '')
+      .toLowerCase()
+      .replace(/[‘’`´]/g, "'")
+      .replace(/[“”]/g, '"')
+      .replace(/\.{2,}/g, ' ')
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function fuzzyMatch(input, question) {
+    const inp = normalizeText(input);
+    const qText = normalizeText(question);
+    
+    // Exact match
+    if (inp === qText) return 100;
+    
+    // Full substring
+    if (qText.includes(inp) || inp.includes(qText)) return 90;
+    
+    // Multiple keyword match (all words in input must be in question)
+    const inpWords = inp.split(/\s+/).filter(w => w.length > 3);
+    const qWords = new Set(qText.split(/\s+/));
+    const matched = inpWords.filter(w => qWords.has(w)).length;
+    if (inpWords.length > 0 && matched === inpWords.length) return 80;
+    
+    // At least 2 keywords match
+    if (matched >= 2) return 60;
+    
+    return 0;
+  }
+
+  function save() {
+    const qText = document.getElementById('qText').value.trim();
+    if (!qText) {
+      setStatus('Please type or paste question text', 'error');
+      return;
+    }
+
+    // Try fuzzy match - find best match
+    let best = null;
+    let bestScore = 0;
+    QUESTIONS.forEach(q => {
+      const score = fuzzyMatch(qText, q.question);
+      if (score > bestScore) {
+        bestScore = score;
+        best = q;
+      }
+    });
+
+    if (bestScore < 45 || !best) {
+      setStatus(`No match found. Try more keywords (score: ${bestScore})`, 'error');
+      return;
+    }
+
+    const imgKey = `image${currentImg}`;
+    mappings[imgKey] = best.id;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(mappings));
+    setStatus(`✓ Mapped ${imgKey} → Question #${best.id} (${bestScore}% match)`, 'ok');
+
+    setTimeout(() => {
+      const next = findNextPending(currentImg + 1, 1);
+      if (next === null) {
+        setStatus('All pending images completed', 'ok');
+        return;
+      }
+      currentImg = next;
+      updateImage();
+    }, 450);
+  }
+
+  function setStatus(msg, cls) {
+    const s = document.getElementById('status');
+    s.textContent = msg;
+    s.className = 'status ' + (cls || '');
+  }
+
+  document.getElementById('btn-prev').onclick = () => {
+    const prev = findNextPending(currentImg - 1, -1);
+    if (prev !== null) {
+      currentImg = prev;
+      updateImage();
+    }
+  };
+
+  document.getElementById('btn-next').onclick = () => {
+    const next = findNextPending(currentImg + 1, 1);
+    if (next !== null) {
+      currentImg = next;
+      updateImage();
+    }
+  };
+
+  document.getElementById('btn-save').onclick = save;
+  document.getElementById('qText').onkeypress = (e) => {
+    if (e.ctrlKey && e.key === 'Enter') save();
+  };
+
+  document.getElementById('btn-export').onclick = () => {
+    if (Object.keys(mappings).length === 0) {
+      alert('No mappings yet. Map some images first.');
+      return;
+    }
+    const payload = { questionIdToImage: {}, questionTextToImage: {} };
+    Object.entries(mappings).forEach(([img, qId]) => {
+      const imgPath = `../assets/asian-book/${img}.png`;
+      payload.questionIdToImage[String(qId)] = imgPath;
+    });
+    const json = JSON.stringify(payload, null, 2);
+    const ta = document.createElement('textarea');
+    ta.value = json;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert(`✓ Copied to clipboard!\n\nPaste into: tmp/manual_image_overrides.json\n\nThen run: npm run extract:questions`);
+  };
+
+  const firstPending = findNextPending(1, 1);
+  if (firstPending !== null) {
+    currentImg = firstPending;
+  }
+  updateImage();
+</script>
+</body>
+</html>
