@@ -1,4 +1,4 @@
-document.getElementById('login-form').addEventListener('submit', function (e) {
+document.getElementById('login-form').addEventListener('submit', async function (e) {
   e.preventDefault();
 
   const email = document.getElementById('email').value.trim().toLowerCase();
@@ -9,7 +9,9 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
     return;
   }
 
-  const session = App.loginAccount(email, password);
+  showMessage('Logging in...', 'info');
+
+  const session = await App.loginAccount(email, password);
 
   if (session) {
     showMessage('Login successful! Redirecting...', 'success');
@@ -19,7 +21,6 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
     return;
   }
 
-  // Login failed
   showMessage('Invalid credentials', 'error');
 });
 

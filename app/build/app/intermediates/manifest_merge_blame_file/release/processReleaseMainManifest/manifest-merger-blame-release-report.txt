@@ -1,0 +1,259 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.sta.testwebsite"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:2:5-67
+11-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:2:22-64
+12    <!--
+13         Required to query activities that can process text, see:
+14         https://developer.android.com/training/package-visibility and
+15         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+16
+17         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
+18    -->
+19    <queries>
+19-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:41:5-46:15
+20        <intent>
+20-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:42:9-45:18
+21            <action android:name="android.intent.action.PROCESS_TEXT" />
+21-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:43:13-72
+21-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:43:21-70
+22
+23            <data android:mimeType="text/plain" />
+23-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:44:13-50
+23-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:44:19-48
+24        </intent>
+25        <intent>
+25-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:8:9-10:18
+26            <action android:name="android.support.customtabs.action.CustomTabsService" />
+26-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:9:13-90
+26-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:9:21-87
+27        </intent>
+28    </queries>
+29
+30    <permission
+30-->[androidx.core:core:1.13.1] C:\Users\user\.gradle\caches\8.14\transforms\cf84faabe16eb045eb23fde5a2854c95\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+31        android:name="com.sta.testwebsite.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+31-->[androidx.core:core:1.13.1] C:\Users\user\.gradle\caches\8.14\transforms\cf84faabe16eb045eb23fde5a2854c95\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+32        android:protectionLevel="signature" />
+32-->[androidx.core:core:1.13.1] C:\Users\user\.gradle\caches\8.14\transforms\cf84faabe16eb045eb23fde5a2854c95\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+33
+34    <uses-permission android:name="com.sta.testwebsite.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+34-->[androidx.core:core:1.13.1] C:\Users\user\.gradle\caches\8.14\transforms\cf84faabe16eb045eb23fde5a2854c95\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+34-->[androidx.core:core:1.13.1] C:\Users\user\.gradle\caches\8.14\transforms\cf84faabe16eb045eb23fde5a2854c95\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+35
+36    <application
+37        android:name="android.app.Application"
+37-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:6:9-42
+38        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+38-->[androidx.core:core:1.13.1] C:\Users\user\.gradle\caches\8.14\transforms\cf84faabe16eb045eb23fde5a2854c95\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+39        android:extractNativeLibs="true"
+40        android:icon="@mipmap/ic_launcher"
+40-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:7:9-43
+41        android:label="STA Test Website" >
+41-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:5:9-41
+42        <activity
+42-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:8:9-29:20
+43            android:name="com.sta.testwebsite.MainActivity"
+43-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:9:13-41
+44            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+44-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:14:13-163
+45            android:exported="true"
+45-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:10:13-36
+46            android:hardwareAccelerated="true"
+46-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:15:13-47
+47            android:launchMode="singleTop"
+47-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:11:13-43
+48            android:taskAffinity=""
+48-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:12:13-36
+49            android:theme="@style/LaunchTheme"
+49-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:13:13-47
+50            android:windowSoftInputMode="adjustResize" >
+50-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:16:13-55
+51
+52            <!--
+53                 Specifies an Android theme to apply to this Activity as soon as
+54                 the Android process has started. This theme is visible to the user
+55                 while the Flutter UI initializes. After that, this theme continues
+56                 to determine the Window background behind the Flutter UI.
+57            -->
+58            <meta-data
+58-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:21:13-24:17
+59                android:name="io.flutter.embedding.android.NormalTheme"
+59-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:22:15-70
+60                android:resource="@style/NormalTheme" />
+60-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:23:15-52
+61
+62            <intent-filter>
+62-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:25:13-28:29
+63                <action android:name="android.intent.action.MAIN" />
+63-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:26:17-68
+63-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:26:25-66
+64
+65                <category android:name="android.intent.category.LAUNCHER" />
+65-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:27:17-76
+65-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:27:27-74
+66            </intent-filter>
+67        </activity>
+68        <!--
+69             Don't delete the meta-data below.
+70             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+71        -->
+72        <meta-data
+72-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:32:9-34:33
+73            android:name="flutterEmbedding"
+73-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:33:13-44
+74            android:value="2" />
+74-->C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\android\app\src\main\AndroidManifest.xml:34:13-30
+75
+76        <activity
+76-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:14:9-18:47
+77            android:name="com.pichillilorenzo.flutter_inappwebview_android.in_app_browser.InAppBrowserActivity"
+77-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:15:13-112
+78            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+78-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:16:13-137
+79            android:exported="false"
+79-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:17:13-37
+80            android:theme="@style/AppTheme" />
+80-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:18:13-44
+81        <activity
+81-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:19:9-22:55
+82            android:name="com.pichillilorenzo.flutter_inappwebview_android.chrome_custom_tabs.ChromeCustomTabsActivity"
+82-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:20:13-120
+83            android:exported="false"
+83-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:21:13-37
+84            android:theme="@style/ThemeTransparent" />
+84-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:22:13-52
+85        <activity
+85-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:23:9-26:55
+86            android:name="com.pichillilorenzo.flutter_inappwebview_android.chrome_custom_tabs.TrustedWebActivity"
+86-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:24:13-114
+87            android:exported="false"
+87-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:25:13-37
+88            android:theme="@style/ThemeTransparent" />
+88-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:26:13-52
+89        <activity
+89-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:27:9-31:55
+90            android:name="com.pichillilorenzo.flutter_inappwebview_android.chrome_custom_tabs.ChromeCustomTabsActivitySingleInstance"
+90-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:28:13-134
+91            android:exported="false"
+91-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:29:13-37
+92            android:launchMode="singleInstance"
+92-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:30:13-48
+93            android:theme="@style/ThemeTransparent" />
+93-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:31:13-52
+94        <activity
+94-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:32:9-36:55
+95            android:name="com.pichillilorenzo.flutter_inappwebview_android.chrome_custom_tabs.TrustedWebActivitySingleInstance"
+95-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:33:13-128
+96            android:exported="false"
+96-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:34:13-37
+97            android:launchMode="singleInstance"
+97-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:35:13-48
+98            android:theme="@style/ThemeTransparent" />
+98-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:36:13-52
+99
+100        <receiver
+100-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:38:9-41:40
+101            android:name="com.pichillilorenzo.flutter_inappwebview_android.chrome_custom_tabs.ActionBroadcastReceiver"
+101-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:39:13-119
+102            android:enabled="true"
+102-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:40:13-35
+103            android:exported="false" />
+103-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:41:13-37
+104
+105        <meta-data
+105-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:43:9-45:36
+106            android:name="io.flutter.embedded_views_preview"
+106-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:44:13-61
+107            android:value="true" />
+107-->[:flutter_inappwebview_android] C:\Users\user\OneDrive\VNIT\Intern\Siemens\LMS_Clone_Arun\STA-Test-Website\app\build\flutter_inappwebview_android\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:45:13-33
+108
+109        <provider
+109-->[androidx.emoji2:emoji2:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\53d88f2620f397aa3f009a41404c697e\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+110            android:name="androidx.startup.InitializationProvider"
+110-->[androidx.emoji2:emoji2:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\53d88f2620f397aa3f009a41404c697e\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+111            android:authorities="com.sta.testwebsite.androidx-startup"
+111-->[androidx.emoji2:emoji2:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\53d88f2620f397aa3f009a41404c697e\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+112            android:exported="false" >
+112-->[androidx.emoji2:emoji2:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\53d88f2620f397aa3f009a41404c697e\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+113            <meta-data
+113-->[androidx.emoji2:emoji2:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\53d88f2620f397aa3f009a41404c697e\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+114                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+114-->[androidx.emoji2:emoji2:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\53d88f2620f397aa3f009a41404c697e\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+115                android:value="androidx.startup" />
+115-->[androidx.emoji2:emoji2:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\53d88f2620f397aa3f009a41404c697e\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+116            <meta-data
+116-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\user\.gradle\caches\8.14\transforms\35b1e69429226e8b677f76d444c08249\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+117                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+117-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\user\.gradle\caches\8.14\transforms\35b1e69429226e8b677f76d444c08249\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+118                android:value="androidx.startup" />
+118-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\user\.gradle\caches\8.14\transforms\35b1e69429226e8b677f76d444c08249\transformed\lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+119            <meta-data
+119-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+120                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+120-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+121                android:value="androidx.startup" />
+121-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+122        </provider>
+123
+124        <uses-library
+124-->[androidx.window:window:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\3aa2e31653e6fda562313f69719b3771\transformed\window-1.2.0\AndroidManifest.xml:23:9-25:40
+125            android:name="androidx.window.extensions"
+125-->[androidx.window:window:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\3aa2e31653e6fda562313f69719b3771\transformed\window-1.2.0\AndroidManifest.xml:24:13-54
+126            android:required="false" />
+126-->[androidx.window:window:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\3aa2e31653e6fda562313f69719b3771\transformed\window-1.2.0\AndroidManifest.xml:25:13-37
+127        <uses-library
+127-->[androidx.window:window:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\3aa2e31653e6fda562313f69719b3771\transformed\window-1.2.0\AndroidManifest.xml:26:9-28:40
+128            android:name="androidx.window.sidecar"
+128-->[androidx.window:window:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\3aa2e31653e6fda562313f69719b3771\transformed\window-1.2.0\AndroidManifest.xml:27:13-51
+129            android:required="false" />
+129-->[androidx.window:window:1.2.0] C:\Users\user\.gradle\caches\8.14\transforms\3aa2e31653e6fda562313f69719b3771\transformed\window-1.2.0\AndroidManifest.xml:28:13-37
+130
+131        <receiver
+131-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+132            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+132-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+133            android:directBootAware="false"
+133-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+134            android:enabled="true"
+134-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+135            android:exported="true"
+135-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+136            android:permission="android.permission.DUMP" >
+136-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+137            <intent-filter>
+137-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+138                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+138-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+138-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+139            </intent-filter>
+140            <intent-filter>
+140-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+141                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+141-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+141-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+142            </intent-filter>
+143            <intent-filter>
+143-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+144                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+144-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+144-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+145            </intent-filter>
+146            <intent-filter>
+146-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+147                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+147-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+147-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\user\.gradle\caches\8.14\transforms\d801504e58163e42436cb7d33343cffa\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+148            </intent-filter>
+149        </receiver>
+150    </application>
+151
+152</manifest>

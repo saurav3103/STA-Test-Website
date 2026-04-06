@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="web_support.js">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/app/intermediates/compressed_assets/release/compressReleaseAssets/out/assets/flutter_assets/packages/flutter_inappwebview_web/assets/web/web_support.js.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

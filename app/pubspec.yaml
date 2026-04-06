@@ -16,3 +16,5 @@ flutter:
   assets:
     - assets/www/public/
     - assets/www/src/
+    - assets/www/public/assets/asian-book/
+    - assets/www/public/assets/asian-book/

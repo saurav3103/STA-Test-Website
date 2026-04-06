@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="t_rex_runner">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/app/intermediates/compressed_assets/release/compressReleaseAssets/out/assets/flutter_assets/packages/flutter_inappwebview/assets/t_rex_runner/t-rex.css.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/app/intermediates/compressed_assets/release/compressReleaseAssets/out/assets/flutter_assets/packages/flutter_inappwebview/assets/t_rex_runner/t-rex.html.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

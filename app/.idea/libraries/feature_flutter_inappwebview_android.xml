@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="feature-flutter_inappwebview_android">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/flutter_inappwebview_android/intermediates/merged_java_res/release/minifyReleaseWithR8/feature-flutter_inappwebview_android.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

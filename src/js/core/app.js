@@ -1,17 +1,10 @@
-// ─── ElectroTest App State ───────────────────────────────────────────────────
+// ─── ElectroTest App State (Supabase Edition) ────────────────────────────────
 
 const App = (() => {
-  const STORAGE_KEYS = {
-    TEACHERS: 'et_teachers',
-    STUDENTS: 'et_students',
-    PAPERS: 'et_papers',
-    RESULTS: 'et_results',
-    SESSION: 'et_session',
-  };
 
   // ── Helpers ──────────────────────────────────────────────────────────────
-  const load = key => JSON.parse(localStorage.getItem(key) || 'null');
-  const save = (key, val) => localStorage.setItem(key, JSON.stringify(val));
+  const loadSession = () => JSON.parse(localStorage.getItem('et_session') || 'null');
+  const saveSession = (val) => localStorage.setItem('et_session', JSON.stringify(val));
 
   function generateCode() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -75,20 +68,9 @@ const App = (() => {
     const normalized = ASIAN_BOOK_QUESTIONS
       .filter(q => q && typeof q.question === 'string' && Array.isArray(q.options) && q.options.length === 4)
       .map(q => {
-        const cloned = {
-          ...q,
-          options: [...q.options],
-          source: 'asian_book',
-          originalId: q.id,
-        };
-
+        const cloned = { ...q, options: [...q.options], source: 'asian_book', originalId: q.id };
         let id = Number(cloned.id);
-        if (!Number.isFinite(id) || existingIds.has(id)) {
-          id = ++nextId;
-        } else {
-          nextId = Math.max(nextId, id);
-        }
-
+        if (!Number.isFinite(id) || existingIds.has(id)) { id = ++nextId; } else { nextId = Math.max(nextId, id); }
         existingIds.add(id);
         cloned.id = id;
         return cloned;
@@ -96,48 +78,39 @@ const App = (() => {
 
     if (!normalized.length) return;
     QUESTION_BANK.push(...normalized);
-    console.log('Integrated uploaded questions:', normalized.length, 'Total:', QUESTION_BANK.length);
   }
 
   function sanitizeQuestionBank() {
     if (typeof QUESTION_BANK === 'undefined' || !Array.isArray(QUESTION_BANK)) return;
-
     const cleaned = QUESTION_BANK.filter(q => {
       if (!q || !Array.isArray(q.options) || q.options.length !== 4) return false;
-
       const promptLikeOptionExists = q.options.some(opt => looksLikePrompt(opt));
       const questionWords = String(q.question || '').trim().split(/\s+/).filter(Boolean).length;
       const questionLooksLikeShortAnswer = questionWords > 0 && questionWords <= 10 && !looksLikePrompt(q.question);
-
-      // Drop split/misaligned rows where the prompt ended up inside options.
-      if (promptLikeOptionExists && questionLooksLikeShortAnswer && q.answer === 0) {
-        return false;
-      }
-
+      if (promptLikeOptionExists && questionLooksLikeShortAnswer && q.answer === 0) return false;
       return true;
     });
-
     if (cleaned.length !== QUESTION_BANK.length) {
-      const removed = QUESTION_BANK.length - cleaned.length;
       QUESTION_BANK.splice(0, QUESTION_BANK.length, ...cleaned);
-      console.warn('Filtered malformed question rows:', removed);
     }
   }
 
   mergeUploadedQuestionBanks();
   sanitizeQuestionBank();
 
-  // ── Auth ─────────────────────────────────────────────────────────────────
-  function seedDefaultTeacher() {
-    let teachers = load(STORAGE_KEYS.TEACHERS) || {};
-    if (!teachers['teacher@demo.com']) {
-      teachers['teacher@demo.com'] = { name: 'Mr. Anderson', password: 'teacher123', role: 'teacher' };
-      save(STORAGE_KEYS.TEACHERS, teachers);
-    }
-    let students = load(STORAGE_KEYS.STUDENTS) || {};
-    if (!students['student@demo.com']) {
-      students['student@demo.com'] = { name: 'Alex Johnson', password: 'student123', role: 'student' };
-      save(STORAGE_KEYS.STUDENTS, students);
+  // ── Auth (Supabase) ───────────────────────────────────────────────────────
+
+  async function seedDefaultTeacher() {
+    // Insert demo accounts if they don't exist
+    const demos = [
+      { email: 'teacher@demo.com', password: 'teacher123', name: 'Mr. Anderson', role: 'teacher' },
+      { email: 'student@demo.com', password: 'student123', name: 'Alex Johnson', role: 'student' },
+    ];
+    for (const demo of demos) {
+      const { data } = await db.from('users').select('email').eq('email', demo.email).single();
+      if (!data) {
+        await db.from('users').insert(demo);
+      }
     }
   }
 
@@ -150,72 +123,39 @@ const App = (() => {
     return 'student';
   }
 
-  function loginTeacher(email, password) {
-    const teachers = load(STORAGE_KEYS.TEACHERS) || {};
-    const t = teachers[email];
-    if (!t || t.password !== password) return null;
-    const session = { role: 'teacher', email, name: t.name };
-    save(STORAGE_KEYS.SESSION, session);
+  async function loginAccount(email, password) {
+    const { data, error } = await db
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .eq('password', password)
+      .single();
+
+    if (error || !data) return null;
+
+    const session = { role: data.role, email: data.email, name: data.name };
+    saveSession(session);
     return session;
   }
 
-  function loginStudent(email, password) {
-    const students = load(STORAGE_KEYS.STUDENTS) || {};
-    const s = students[email];
-    if (!s || s.password !== password) return null;
-    const session = { role: 'student', email, name: s.name };
-    save(STORAGE_KEYS.SESSION, session);
-    return session;
-  }
-
-  function loginAccount(email, password) {
-    const teachers = load(STORAGE_KEYS.TEACHERS) || {};
-    const teacher = teachers[email];
-    if (teacher && teacher.password === password) {
-      const session = { role: 'teacher', email, name: teacher.name };
-      save(STORAGE_KEYS.SESSION, session);
-      return session;
-    }
-
-    const students = load(STORAGE_KEYS.STUDENTS) || {};
-    const student = students[email];
-    if (student && student.password === password) {
-      const session = { role: 'student', email, name: student.name };
-      save(STORAGE_KEYS.SESSION, session);
-      return session;
-    }
-
-    return null;
-  }
-
-  function registerStudent(email, password, name) {
-    const students = load(STORAGE_KEYS.STUDENTS) || {};
-    if (students[email]) return { error: 'Email already registered.' };
-    students[email] = { name, password, role: 'student' };
-    save(STORAGE_KEYS.STUDENTS, students);
+  async function registerStudent(email, password, name) {
+    const { data: existing } = await db.from('users').select('email').eq('email', email).single();
+    if (existing) return { error: 'Email already registered.' };
+    const { error } = await db.from('users').insert({ email, password, name, role: 'student' });
+    if (error) return { error: error.message };
     return { success: true };
   }
 
-  function registerTeacher(email, password, name) {
-    const teachers = load(STORAGE_KEYS.TEACHERS) || {};
-    if (teachers[email]) return { error: 'Email already registered.' };
-    teachers[email] = { name, password, role: 'teacher' };
-    save(STORAGE_KEYS.TEACHERS, teachers);
+  async function registerTeacher(email, password, name) {
+    const { data: existing } = await db.from('users').select('email').eq('email', email).single();
+    if (existing) return { error: 'Email already registered.' };
+    const { error } = await db.from('users').insert({ email, password, name, role: 'teacher' });
+    if (error) return { error: error.message };
     return { success: true };
   }
 
-  function registerAccount(email, password, name) {
-    const role = inferRoleFromEmail(email);
-    const result = role === 'teacher'
-      ? registerTeacher(email, password, name)
-      : registerStudent(email, password, name);
-
-    if (result.error) return result;
-    return { ...result, role };
-  }
-
-  function getSession() { return load(STORAGE_KEYS.SESSION); }
-  function logout() { localStorage.removeItem(STORAGE_KEYS.SESSION); }
+  function getSession() { return loadSession(); }
+  function logout() { localStorage.removeItem('et_session'); }
 
   function requireAuth(role) {
     const s = getSession();
@@ -226,12 +166,9 @@ const App = (() => {
     return s;
   }
 
-  // ── Papers ────────────────────────────────────────────────────────────────
-  function createPaper({ title, teacherEmail, questionIds, questionPoolIds, questionCount, randomPerStudent, timeLimit, passMark }) {
-    const papers = load(STORAGE_KEYS.PAPERS) || {};
-    let code;
-    do { code = generateCode(); } while (papers[code]);
+  // ── Papers (Supabase) ─────────────────────────────────────────────────────
 
+  async function createPaper({ title, teacherEmail, questionIds, questionPoolIds, questionCount, randomPerStudent, timeLimit, passMark }) {
     const fallbackIds = Array.isArray(questionIds) ? questionIds : [];
     const poolIds = Array.isArray(questionPoolIds) && questionPoolIds.length
       ? [...new Set(questionPoolIds)]
@@ -239,67 +176,85 @@ const App = (() => {
     const finalCount = Math.max(1, Math.min(Number(questionCount) || fallbackIds.length || poolIds.length, poolIds.length || fallbackIds.length || 1));
     const fixedIds = fallbackIds.length ? fallbackIds.slice(0, finalCount) : poolIds.slice(0, finalCount);
 
-    papers[code] = {
+    let code;
+    let exists = true;
+    while (exists) {
+      code = generateCode();
+      const { data } = await db.from('papers').select('code').eq('code', code).single();
+      exists = !!data;
+    }
+
+    const paper = {
       code,
       title,
-      teacherEmail,
-      questionIds: fixedIds,
-      questionPoolIds: poolIds,
-      questionCount: finalCount,
-      randomPerStudent: randomPerStudent !== false,
-      timeLimit: timeLimit || 30, // minutes
-      passMark: passMark || 60,
-      createdAt: new Date().toISOString(),
+      teacher_email: teacherEmail,
+      question_ids: fixedIds,
+      question_pool_ids: poolIds,
+      question_count: finalCount,
+      random_per_student: randomPerStudent !== false,
+      time_limit: timeLimit || 30,
+      pass_mark: passMark || 60,
+      created_at: new Date().toISOString(),
       active: true,
     };
-    save(STORAGE_KEYS.PAPERS, papers);
-    return papers[code];
+
+    const { error } = await db.from('papers').insert(paper);
+    if (error) return null;
+    return paper;
   }
 
-  function getPaper(code) {
-    const papers = load(STORAGE_KEYS.PAPERS) || {};
-    return papers[code] || null;
+  async function getPaper(code) {
+    const { data, error } = await db.from('papers').select('*').eq('code', code).single();
+    if (error || !data) return null;
+    return {
+      code: data.code,
+      title: data.title,
+      teacherEmail: data.teacher_email,
+      questionIds: data.question_ids,
+      questionPoolIds: data.question_pool_ids,
+      questionCount: data.question_count,
+      randomPerStudent: data.random_per_student,
+      timeLimit: data.time_limit,
+      passMark: data.pass_mark,
+      createdAt: data.created_at,
+      active: data.active,
+    };
   }
 
-  function getTeacherPapers(teacherEmail) {
-    const papers = load(STORAGE_KEYS.PAPERS) || {};
-    return Object.values(papers).filter(p => p.teacherEmail === teacherEmail)
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  async function getTeacherPapers(teacherEmail) {
+    const { data, error } = await db.from('papers').select('*').eq('teacher_email', teacherEmail).order('created_at', { ascending: false });
+    if (error || !data) return [];
+    return data.map(d => ({
+      code: d.code, title: d.title, teacherEmail: d.teacher_email,
+      questionIds: d.question_ids, questionPoolIds: d.question_pool_ids,
+      questionCount: d.question_count, randomPerStudent: d.random_per_student,
+      timeLimit: d.time_limit, passMark: d.pass_mark, createdAt: d.created_at, active: d.active,
+    }));
   }
 
-  function togglePaperActive(code, active) {
-    const papers = load(STORAGE_KEYS.PAPERS) || {};
-    if (papers[code]) { papers[code].active = active; save(STORAGE_KEYS.PAPERS, papers); }
+  async function togglePaperActive(code, active) {
+    await db.from('papers').update({ active }).eq('code', code);
   }
 
-  function deletePaper(code) {
-    const papers = load(STORAGE_KEYS.PAPERS) || {};
-    delete papers[code];
-    save(STORAGE_KEYS.PAPERS, papers);
+  async function deletePaper(code) {
+    await db.from('papers').delete().eq('code', code);
   }
 
   function pickStudentQuestionIds(paper, studentEmail) {
     if (!paper) return [];
-
     const fixedIds = Array.isArray(paper.questionIds) ? paper.questionIds : [];
-    const poolIds = Array.isArray(paper.questionPoolIds) && paper.questionPoolIds.length
-      ? paper.questionPoolIds
-      : fixedIds;
-
+    const poolIds = Array.isArray(paper.questionPoolIds) && paper.questionPoolIds.length ? paper.questionPoolIds : fixedIds;
     if (!poolIds.length) return [];
-
     const count = Math.max(1, Math.min(Number(paper.questionCount) || fixedIds.length || poolIds.length, poolIds.length));
-    if (paper.randomPerStudent === false || !studentEmail) {
-      return [...poolIds].slice(0, count);
-    }
-
+    if (paper.randomPerStudent === false || !studentEmail) return [...poolIds].slice(0, count);
     const seed = `${paper.code}|${studentEmail.toLowerCase()}`;
     return shuffleWithSeed([...poolIds], seed).slice(0, count);
   }
 
-  // ── Results ───────────────────────────────────────────────────────────────
-  function saveResult({ paperCode, studentEmail, studentName, questionIds, answers, timeTaken }) {
-    const paper = getPaper(paperCode);
+  // ── Results (Supabase) ────────────────────────────────────────────────────
+
+  async function saveResult({ paperCode, studentEmail, studentName, questionIds, answers, timeTaken }) {
+    const paper = await getPaper(paperCode);
     if (!paper) return null;
 
     const effectiveIds = (Array.isArray(questionIds) && questionIds.length)
@@ -307,7 +262,6 @@ const App = (() => {
       : pickStudentQuestionIds(paper, studentEmail);
     const questionById = new Map(QUESTION_BANK.map(q => [q.id, q]));
     const questions = effectiveIds.map(id => questionById.get(id)).filter(Boolean);
-
     if (!questions.length) return null;
 
     let score = 0;
@@ -321,49 +275,59 @@ const App = (() => {
     const percentage = Math.round((score / questions.length) * 100);
     const result = {
       id: `${paperCode}_${studentEmail}_${Date.now()}`,
-      paperCode,
-      paperTitle: paper.title,
-      studentEmail,
-      studentName,
-      questionIds: questions.map(q => q.id),
+      paper_code: paperCode,
+      paper_title: paper.title,
+      student_email: studentEmail,
+      student_name: studentName,
+      question_ids: questions.map(q => q.id),
       score,
       total: questions.length,
       percentage,
       passed: percentage >= paper.passMark,
-      passMark: paper.passMark,
-      timeTaken,
+      pass_mark: paper.passMark,
+      time_taken: timeTaken,
       breakdown,
-      submittedAt: new Date().toISOString(),
+      submitted_at: new Date().toISOString(),
     };
 
-    const results = load(STORAGE_KEYS.RESULTS) || [];
-    results.push(result);
-    save(STORAGE_KEYS.RESULTS, results);
-    return result;
+    const { error } = await db.from('results').insert(result);
+    if (error) return null;
+    return {
+      ...result,
+      paperCode: result.paper_code,
+      paperTitle: result.paper_title,
+      studentEmail: result.student_email,
+      studentName: result.student_name,
+      questionIds: result.question_ids,
+      timeTaken: result.time_taken,
+      passMark: result.pass_mark,
+      submittedAt: result.submitted_at,
+    };
   }
 
-  function getPaperResults(paperCode) {
-    const results = load(STORAGE_KEYS.RESULTS) || [];
-    return results.filter(r => r.paperCode === paperCode)
-      .sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+  async function getPaperResults(paperCode) {
+    const { data, error } = await db.from('results').select('*').eq('paper_code', paperCode).order('submitted_at', { ascending: false });
+    if (error || !data) return [];
+    return data.map(r => ({ ...r, paperCode: r.paper_code, paperTitle: r.paper_title, studentEmail: r.student_email, studentName: r.student_name, timeTaken: r.time_taken, passMark: r.pass_mark, submittedAt: r.submitted_at }));
   }
 
-  function getStudentResults(studentEmail) {
-    const results = load(STORAGE_KEYS.RESULTS) || [];
-    return results.filter(r => r.studentEmail === studentEmail)
-      .sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+  async function getStudentResults(studentEmail) {
+    const { data, error } = await db.from('results').select('*').eq('student_email', studentEmail).order('submitted_at', { ascending: false });
+    if (error || !data) return [];
+    return data.map(r => ({ ...r, paperCode: r.paper_code, paperTitle: r.paper_title, studentEmail: r.student_email, studentName: r.student_name, timeTaken: r.time_taken, passMark: r.pass_mark, submittedAt: r.submitted_at }));
   }
 
-  function getResult(resultId) {
-    const results = load(STORAGE_KEYS.RESULTS) || [];
-    return results.find(r => r.id === resultId) || null;
+  async function getResult(resultId) {
+    const { data, error } = await db.from('results').select('*').eq('id', resultId).single();
+    if (error || !data) return null;
+    return { ...data, paperCode: data.paper_code, paperTitle: data.paper_title, studentEmail: data.student_email, studentName: data.student_name, timeTaken: data.time_taken, passMark: data.pass_mark, submittedAt: data.submitted_at };
   }
 
   function generatePaperQuestions(count) {
     return shuffle(QUESTION_BANK).slice(0, count).map(q => q.id);
   }
 
-  // ── Question Management (Asian Book Integration) ─────────────────────────
+  // ── Question Management ───────────────────────────────────────────────────
   function getAsianBookQuestions() {
     const merged = QUESTION_BANK.filter(q => q && q.source === 'asian_book');
     if (merged.length) return merged;
@@ -392,7 +356,8 @@ const App = (() => {
 
   // ── Public API ────────────────────────────────────────────────────────────
   return {
-    seedDefaultTeacher, inferRoleFromEmail, loginTeacher, loginStudent, loginAccount, registerStudent, registerTeacher, registerAccount,
+    seedDefaultTeacher, inferRoleFromEmail, loginAccount,
+    registerStudent, registerTeacher,
     getSession, logout, requireAuth,
     createPaper, getPaper, getTeacherPapers, togglePaperActive, deletePaper, pickStudentQuestionIds,
     saveResult, getPaperResults, getStudentResults, getResult,

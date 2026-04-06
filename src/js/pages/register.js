@@ -1,4 +1,4 @@
-document.getElementById('register-form').addEventListener('submit', function (e) {
+document.getElementById('register-form').addEventListener('submit', async function (e) {
   e.preventDefault();
 
   const email = document.getElementById('email').value.trim().toLowerCase();
@@ -6,7 +6,6 @@ document.getElementById('register-form').addEventListener('submit', function (e)
   const role = document.getElementById('role').value;
   const name = email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1);
 
-  // Validation
   if (!email || !password || !role) {
     showMessage('Please fill all fields', 'error');
     return;
@@ -17,17 +16,18 @@ document.getElementById('register-form').addEventListener('submit', function (e)
     return;
   }
 
-  const selectedRole = role;
-  const result = selectedRole === 'teacher'
-    ? App.registerTeacher(email, password, name)
-    : App.registerStudent(email, password, name);
+  showMessage('Creating account...', 'info');
+
+  const result = role === 'teacher'
+    ? await App.registerTeacher(email, password, name)
+    : await App.registerStudent(email, password, name);
 
   if (result.error) {
     showMessage(result.error, 'error');
     return;
   }
 
-  showMessage(`Account created as ${selectedRole}. Redirecting to login...`, 'success');
+  showMessage(`Account created as ${role}. Redirecting to login...`, 'success');
   document.getElementById('register-form').reset();
   setTimeout(() => {
     window.location.href = 'login.html';
